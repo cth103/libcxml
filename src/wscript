@@ -1,0 +1,9 @@
+def build(bld):
+    obj = bld(features = 'cxx cxxshlib')
+    obj.name = 'libcxml'
+    obj.target = 'cxml'
+    obj.export_includes = ['.']
+    obj.uselib = 'LIBXML++ BOOST_FILESYSTEM'
+    obj.source = "cxml.cc"
+
+    bld.install_files('${PREFIX}/include/libcxml', "cxml.h")

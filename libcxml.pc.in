@@ -1,0 +1,10 @@
+prefix=@prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libcxml
+Description: Library to simplify XML parsing with libxml++
+Version: @version@
+Requires: libxml++-2.6
+Libs: @libs@
+Cflags: -I${includedir}
