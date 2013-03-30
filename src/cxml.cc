@@ -21,8 +21,15 @@ cxml::Node::Node (xmlpp::Node const * node)
 
 }
 
+string
+cxml::Node::name () const
+{
+	assert (_node);
+	return _node->get_name ();
+}
+
 shared_ptr<cxml::Node>
-cxml::Node::node_child (string name)
+cxml::Node::node_child (string name) const
 {
 	list<shared_ptr<cxml::Node> > n = node_children (name);
 	if (n.size() > 1) {
@@ -34,8 +41,21 @@ cxml::Node::node_child (string name)
 	return n.front ();
 }
 
+shared_ptr<cxml::Node>
+cxml::Node::optional_node_child (string name) const
+{
+	list<shared_ptr<cxml::Node> > n = node_children (name);
+	if (n.size() > 1) {
+		throw cxml::Error ("duplicate XML tag " + name);
+	} else if (n.empty ()) {
+		return shared_ptr<cxml::Node> ();
+	}
+	
+	return n.front ();
+}
+
 list<shared_ptr<cxml::Node> >
-cxml::Node::node_children (string name)
+cxml::Node::node_children (string name) const
 {
 	/* XXX: using find / get_path should work here, but I can't follow
 	   how get_path works.
@@ -55,13 +75,13 @@ cxml::Node::node_children (string name)
 }
 
 string
-cxml::Node::string_child (string c)
+cxml::Node::string_child (string c) const
 {
 	return node_child(c)->content ();
 }
 
 optional<string>
-cxml::Node::optional_string_child (string c)
+cxml::Node::optional_string_child (string c) const
 {
 	list<shared_ptr<Node> > nodes = node_children (c);
 	if (nodes.size() > 1) {
@@ -76,14 +96,14 @@ cxml::Node::optional_string_child (string c)
 }
 
 bool
-cxml::Node::bool_child (string c)
+cxml::Node::bool_child (string c) const
 {
 	string const s = string_child (c);
 	return (s == "1" || s == "yes");
 }
 
 optional<bool>
-cxml::Node::optional_bool_child (string c)
+cxml::Node::optional_bool_child (string c) const
 {
 	optional<string> s = optional_string_child (c);
 	if (!s) {
@@ -94,13 +114,13 @@ cxml::Node::optional_bool_child (string c)
 }
 
 void
-cxml::Node::ignore_child (string name)
+cxml::Node::ignore_child (string name) const
 {
 	_taken.push_back (name);
 }
 
 string
-cxml::Node::string_attribute (string name)
+cxml::Node::string_attribute (string name) const
 {
 	xmlpp::Element const * e = dynamic_cast<const xmlpp::Element *> (_node);
 	if (!e) {
@@ -116,7 +136,7 @@ cxml::Node::string_attribute (string name)
 }
 
 optional<string>
-cxml::Node::optional_string_attribute (string name)
+cxml::Node::optional_string_attribute (string name) const
 {
 	xmlpp::Element const * e = dynamic_cast<const xmlpp::Element *> (_node);
 	if (!e) {
@@ -132,14 +152,14 @@ cxml::Node::optional_string_attribute (string name)
 }
 
 bool
-cxml::Node::bool_attribute (string name)
+cxml::Node::bool_attribute (string name) const
 {
 	string const s = string_attribute (name);
 	return (s == "1" || s == "yes");
 }
 
 optional<bool>
-cxml::Node::optional_bool_attribute (string name)
+cxml::Node::optional_bool_attribute (string name) const
 {
 	optional<string> s = optional_string_attribute (name);
 	if (!s) {
@@ -150,7 +170,7 @@ cxml::Node::optional_bool_attribute (string name)
 }
 
 void
-cxml::Node::done ()
+cxml::Node::done () const
 {
 	xmlpp::Node::NodeList c = _node->get_children ();
 	for (xmlpp::Node::NodeList::iterator i = c.begin(); i != c.end(); ++i) {
@@ -161,7 +181,7 @@ cxml::Node::done ()
 }
 
 string
-cxml::Node::content ()
+cxml::Node::content () const
 {
 	string content;
 	

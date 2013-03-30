@@ -8,6 +8,7 @@
 #include <boost/optional.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/erase.hpp>
+#include <glibmm.h>
 
 namespace xmlpp {
 	class Node;
@@ -52,6 +53,8 @@ public:
 	 */
 	Node (xmlpp::Node const * node);
 
+	std::string name () const;
+
 	/* A set of methods which look up a child of this node by
 	 * its name, and return its contents as some type or other.
 	 *
@@ -74,14 +77,14 @@ public:
 	 * than one of the specified child node.
 	 */
 
-	std::string string_child (std::string c);
-	boost::optional<std::string> optional_string_child (std::string);
+	std::string string_child (std::string c) const;
+	boost::optional<std::string> optional_string_child (std::string) const;
 
-	bool bool_child (std::string);
-	boost::optional<bool> optional_bool_child (std::string);
+	bool bool_child (std::string) const;
+	boost::optional<bool> optional_bool_child (std::string) const;
 
 	template <class T>
-	T numerical_child (std::string c)
+	T numerical_child (std::string c) const
 	{
 		std::string s = string_child (c);
 		boost::erase_all (s, " ");
@@ -89,7 +92,7 @@ public:
 	}
 
 	template <class T>
-	boost::optional<T> optional_numerical_child (std::string c)
+	boost::optional<T> optional_numerical_child (std::string c) const
 	{
 		boost::optional<std::string> s = optional_string_child (c);
 		if (!s) {
@@ -102,25 +105,25 @@ public:
 	}
 		
 	/** This will mark a child as to be ignored when calling done() */
-	void ignore_child (std::string);
+	void ignore_child (std::string) const;
 
 	/** Check whether all children of this Node have been looked up
 	 *  or passed to ignore_child().  If not, an exception is thrown.
 	 */
-	void done ();
+	void done () const;
 
 	/* These methods look for an attribute of this node, in the
 	 * same way as the child methods do.
 	 */
 
-	std::string string_attribute (std::string);
-	boost::optional<std::string> optional_string_attribute (std::string);
+	std::string string_attribute (std::string) const;
+	boost::optional<std::string> optional_string_attribute (std::string) const;
 
-	bool bool_attribute (std::string);
-	boost::optional<bool> optional_bool_attribute (std::string);
+	bool bool_attribute (std::string) const;
+	boost::optional<bool> optional_bool_attribute (std::string) const;
 
 	template <class T>
-	T numerical_attribute (std::string c)
+	T numerical_attribute (std::string c) const
 	{
 		std::string s = string_attribute (c);
 		boost::erase_all (s, " ");
@@ -128,7 +131,7 @@ public:
 	}
 
 	template <class T>
-	boost::optional<T> optional_numerical_attribute (std::string c)
+	boost::optional<T> optional_numerical_attribute (std::string c) const
 	{
 		boost::optional<std::string> s = optional_string_attribute (c);
 		if (!s) {
@@ -141,18 +144,18 @@ public:
 	}
 
 	/** @return The content of this node */
-	std::string content ();
+	std::string content () const;
 
-	boost::shared_ptr<Node> node_child (std::string);
-	boost::shared_ptr<Node> optional_node_child (std::string);
+	boost::shared_ptr<Node> node_child (std::string) const;
+	boost::shared_ptr<Node> optional_node_child (std::string) const;
 
-	std::list<boost::shared_ptr<Node> > node_children (std::string);
+	std::list<boost::shared_ptr<Node> > node_children (std::string) const;
 	
 protected:
 	xmlpp::Node const * _node;
 	
 private:
-	std::list<Glib::ustring> _taken;
+	mutable std::list<Glib::ustring> _taken;
 };
 
 class File : public Node

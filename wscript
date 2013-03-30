@@ -26,7 +26,7 @@ def build(bld):
     bld(source = 'libcxml.pc.in',
         version = VERSION,
         includedir = '%s/include' % bld.env.PREFIX,
-        libs = "-L${libdir}",
+        libs = "-L${libdir} -lcxml",
         install_path = '${LIBDIR}/pkgconfig')
 
     bld.recurse('src')
