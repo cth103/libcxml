@@ -37,24 +37,24 @@ BOOST_AUTO_TEST_CASE (test)
 	cxml::File file ("test/ref/a.xml", "A");
 
 	BOOST_CHECK_EQUAL (file.string_child("B"), "42");
-	BOOST_CHECK_EQUAL (file.numerical_child<int>("B"), 42);
-	BOOST_CHECK_EQUAL (file.numerical_child<float>("B"), 42);
+	BOOST_CHECK_EQUAL (file.number_child<int>("B"), 42);
+	BOOST_CHECK_EQUAL (file.number_child<float>("B"), 42);
 	BOOST_CHECK_EQUAL (file.string_child("C"), "fred");
-	BOOST_CHECK_EQUAL (file.numerical_child<double>("D"), 42.9);
+	BOOST_CHECK_EQUAL (file.number_child<double>("D"), 42.9);
 	BOOST_CHECK_EQUAL (file.string_child("E"), "yes");
 	BOOST_CHECK_EQUAL (file.bool_child("E"), true);
 	BOOST_CHECK_THROW (file.bool_child("F"), cxml::Error);
 
 	BOOST_CHECK (file.optional_string_child("B"));
 	BOOST_CHECK_EQUAL (file.optional_string_child("B").get(), "42");
-	BOOST_CHECK (file.optional_numerical_child<int>("B"));
-	BOOST_CHECK_EQUAL (file.optional_numerical_child<int>("B").get(), 42);
-	BOOST_CHECK (file.optional_numerical_child<float>("B"));
-	BOOST_CHECK_EQUAL (file.optional_numerical_child<float>("B").get(), 42);
+	BOOST_CHECK (file.optional_number_child<int>("B"));
+	BOOST_CHECK_EQUAL (file.optional_number_child<int>("B").get(), 42);
+	BOOST_CHECK (file.optional_number_child<float>("B"));
+	BOOST_CHECK_EQUAL (file.optional_number_child<float>("B").get(), 42);
 	BOOST_CHECK (file.optional_string_child("C"));
 	BOOST_CHECK_EQUAL (file.optional_string_child("C").get(), "fred");
-	BOOST_CHECK (file.optional_numerical_child<double>("D"));
-	BOOST_CHECK_EQUAL (file.optional_numerical_child<double>("D").get(), 42.9);
+	BOOST_CHECK (file.optional_number_child<double>("D"));
+	BOOST_CHECK_EQUAL (file.optional_number_child<double>("D").get(), 42.9);
 	BOOST_CHECK (file.optional_string_child("E"));
 	BOOST_CHECK_EQUAL (file.optional_string_child("E").get(), "yes");
 	BOOST_CHECK (file.optional_bool_child("E"));

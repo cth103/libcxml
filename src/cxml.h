@@ -66,7 +66,7 @@ public:
 	 * </Fred>
 	 *
 	 * string_child ("Jim") would return "42"
-	 * numerical_child<int64_t> ("Jim") would return 42.
+	 * number_child<int64_t> ("Jim") would return 42.
 	 * ...and so on.
 	 *
 	 * The methods not marked "optional" will throw an exception
@@ -84,7 +84,7 @@ public:
 	boost::optional<bool> optional_bool_child (std::string) const;
 
 	template <class T>
-	T numerical_child (std::string c) const
+	T number_child (std::string c) const
 	{
 		std::string s = string_child (c);
 		boost::erase_all (s, " ");
@@ -92,7 +92,7 @@ public:
 	}
 
 	template <class T>
-	boost::optional<T> optional_numerical_child (std::string c) const
+	boost::optional<T> optional_number_child (std::string c) const
 	{
 		boost::optional<std::string> s = optional_string_child (c);
 		if (!s) {
@@ -123,7 +123,7 @@ public:
 	boost::optional<bool> optional_bool_attribute (std::string) const;
 
 	template <class T>
-	T numerical_attribute (std::string c) const
+	T number_attribute (std::string c) const
 	{
 		std::string s = string_attribute (c);
 		boost::erase_all (s, " ");
@@ -131,7 +131,7 @@ public:
 	}
 
 	template <class T>
-	boost::optional<T> optional_numerical_attribute (std::string c) const
+	boost::optional<T> optional_number_attribute (std::string c) const
 	{
 		boost::optional<std::string> s = optional_string_attribute (c);
 		if (!s) {
