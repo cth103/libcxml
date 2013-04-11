@@ -3,10 +3,18 @@ VERSION = '0.02pre'
 
 def options(opt):
     opt.load('compiler_cxx')
+    opt.add_option('--target-windows', action='store_true', default = False, help = 'set up to do a cross-compile to Windows')
 
 def configure(conf):
     conf.load('compiler_cxx')
     conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2'])
+
+    conf.env.TARGET_WINDOWS = conf.options.target_windows
+
+    if conf.options.target_windows:
+        boost_lib_suffix = '-mt'
+    else:
+        boost_lib_suffix = ''
 
     conf.check_cfg(package = 'libxml++-2.6', args = '--cflags --libs', uselib_store = 'LIBXML++', mandatory = True)
 
@@ -16,7 +24,7 @@ def configure(conf):
 		   """,
                    msg = 'Checking for boost filesystem library',
                    libpath = '/usr/local/lib',
-                   lib = ['boost_filesystem', 'boost_system'],
+                   lib = ['boost_filesystem%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
                    uselib_store = 'BOOST_FILESYSTEM')
 
     conf.recurse('test')
