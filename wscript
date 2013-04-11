@@ -27,6 +27,15 @@ def configure(conf):
                    lib = ['boost_filesystem%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
                    uselib_store = 'BOOST_FILESYSTEM')
 
+    conf.check_cxx(fragment = """
+                              #define BOOST_TEST_MODULE Config test\n
+    			      #include <boost/test/unit_test.hpp>\n
+                              int main() {}
+                              """,
+                              msg = 'Checking for boost unit testing library',
+                              lib = ['boost_unit_test_framework%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
+                              uselib_store = 'BOOST_TEST')
+
     conf.recurse('test')
 
 def build(bld):
