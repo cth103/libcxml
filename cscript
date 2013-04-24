@@ -1,2 +1,9 @@
-builds = ['source']
+
+def build(env, target):
+    cmd = './waf configure --prefix=%s' % env.work_dir_cscript()
+    if target.platform == 'windows':
+        cmd += ' --target-windows'
+    env.command(cmd)
+    env.command('./waf build install')
+
 
