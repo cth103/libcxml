@@ -1,15 +1,17 @@
 APPNAME = 'libcxml'
-VERSION = '0.04pre'
+VERSION = '0.05pre'
 
 def options(opt):
     opt.load('compiler_cxx')
     opt.add_option('--target-windows', action='store_true', default = False, help = 'set up to do a cross-compile to Windows')
+    opt.add_option('--static', action='store_true', default = False, help = 'build statically')
 
 def configure(conf):
     conf.load('compiler_cxx')
     conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2'])
 
     conf.env.TARGET_WINDOWS = conf.options.target_windows
+    conf.env.STATIC = conf.options.static
 
     if conf.options.target_windows:
         boost_lib_suffix = '-mt'

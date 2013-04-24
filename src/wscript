@@ -1,5 +1,8 @@
 def build(bld):
-    obj = bld(features = 'cxx cxxshlib')
+    if bld.env.STATIC:
+        obj = bld(features = 'cxx cxxstlib')
+    else:
+        obj = bld(features = 'cxx cxxshlib')
     obj.name = 'libcxml'
     obj.target = 'cxml'
     obj.export_includes = ['.']
@@ -7,3 +10,6 @@ def build(bld):
     obj.source = "cxml.cc"
 
     bld.install_files('${PREFIX}/include/libcxml', "cxml.h")
+    if bld.env.STATIC:
+        bld.install_files('${PREFIX}/lib', 'libcxml.a')
+
