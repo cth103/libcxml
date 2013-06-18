@@ -4,7 +4,5 @@ def build(target):
         cmd += ' --static'
     elif target.platform == 'windows':
         cmd += ' --target-windows'
-    elif target.platform == 'osx':
-        cmd += ' --osx'
     target.command(cmd)
     target.command('./waf build install')
