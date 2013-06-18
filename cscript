@@ -1,2 +1,11 @@
-release_targets = ['source']
+def build(target):
+    cmd = './waf configure --prefix=%s' % target.work_dir_cscript()
+    if target.platform == 'linux':
+        cmd += ' --static'
+    elif target.platform == 'windows':
+        cmd += ' --target-windows'
+    elif target.platform == 'osx':
+        cmd += ' --osx'
+    target.command(cmd)
+    target.command('./waf build install')
 
