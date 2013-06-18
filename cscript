@@ -8,4 +8,3 @@ def build(target):
         cmd += ' --osx'
     target.command(cmd)
     target.command('./waf build install')
-
