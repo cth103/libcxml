@@ -196,6 +196,12 @@ cxml::Node::content () const
 	return content;
 }
 
+string
+cxml::Node::namespace_prefix () const
+{
+	return _node->get_namespace_prefix ();
+}
+
 cxml::File::File (string file, string root_name)
 {
 	if (!filesystem::exists (file)) {
