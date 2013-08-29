@@ -158,14 +158,21 @@ private:
 	mutable std::list<Glib::ustring> _taken;
 };
 
-class File : public Node
+class Document : public Node
 {
 public:
-	File (std::string file, std::string root_name);
-	virtual ~File ();
+	Document (std::string root_name);
+
+	void read_file (boost::filesystem::path);
+	void read_stream (std::istream &);
+	
+	virtual ~Document ();
 
 private:
+	void take_root_node ();
+	
 	xmlpp::DomParser* _parser;
+	std::string _root_name;
 };
 
 }

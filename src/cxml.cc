@@ -196,25 +196,45 @@ cxml::Node::content () const
 	return content;
 }
 
-cxml::File::File (string file, string root_name)
+cxml::Document::Document (string root_name)
+	: _root_name (root_name)
+{
+	_parser = new xmlpp::DomParser;
+}
+
+cxml::Document::~Document ()
+{
+	delete _parser;
+}
+
+void
+cxml::Document::read_file (filesystem::path file)
 {
 	if (!filesystem::exists (file)) {
 		throw cxml::Error ("XML file does not exist");
 	}
 	
-	_parser = new xmlpp::DomParser;
-	_parser->parse_file (file);
+	_parser->parse_file (file.string ());
+	take_root_node ();
+}
+
+void
+cxml::Document::read_stream (istream& stream)
+{
+	_parser->parse_stream (stream);
+	take_root_node ();
+}
+
+void
+cxml::Document::take_root_node ()
+{
 	if (!_parser) {
 		throw cxml::Error ("could not parse XML");
 	}
 
 	_node = _parser->get_document()->get_root_node ();
-	if (_node->get_name() != root_name) {
+	if (_node->get_name() != _root_name) {
 		throw cxml::Error ("unrecognised root node");
 	}
 }
 
-cxml::File::~File ()
-{
-	delete _parser;
-}
