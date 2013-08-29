@@ -147,6 +147,9 @@ public:
 	/** @return The content of this node */
 	std::string content () const;
 
+	/** @return namespace prefix of this node */
+	std::string namespace_prefix () const;
+
 	boost::shared_ptr<Node> node_child (std::string) const;
 	boost::shared_ptr<Node> optional_node_child (std::string) const;
 

@@ -196,6 +196,12 @@ cxml::Node::content () const
 	return content;
 }
 
+string
+cxml::Node::namespace_prefix () const
+{
+	return _node->get_namespace_prefix ();
+}
+
 cxml::Document::Document (string root_name)
 	: _root_name (root_name)
 {
