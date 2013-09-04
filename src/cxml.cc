@@ -197,6 +197,12 @@ cxml::Node::content () const
 }
 
 string
+cxml::Node::namespace_uri () const
+{
+	return _node->get_namespace_uri ();
+}
+
+string
 cxml::Node::namespace_prefix () const
 {
 	return _node->get_namespace_prefix ();

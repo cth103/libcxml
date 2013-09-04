@@ -147,6 +147,9 @@ public:
 	/** @return The content of this node */
 	std::string content () const;
 
+	/** @return namespace URI of this node */
+	std::string namespace_uri () const;
+
 	/** @return namespace prefix of this node */
 	std::string namespace_prefix () const;
 
