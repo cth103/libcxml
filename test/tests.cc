@@ -62,4 +62,8 @@ BOOST_AUTO_TEST_CASE (test)
 	BOOST_CHECK_EQUAL (document.optional_bool_child("E").get(), true);
 	BOOST_CHECK_THROW (document.optional_bool_child("F"), cxml::Error);
 	BOOST_CHECK (!document.optional_bool_child("G"));
+
+	BOOST_CHECK_EQUAL (document.node_children("F").size(), 2);
+	BOOST_CHECK_EQUAL (document.node_children("F").front()->content(), "1");
+	BOOST_CHECK_EQUAL (document.node_children("F").back()->content(), "2");
 }
