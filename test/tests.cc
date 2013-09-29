@@ -73,4 +73,5 @@ BOOST_AUTO_TEST_CASE (test)
 	BOOST_CHECK_EQUAL (document.node_children("H/I").back()->content(), "more testing");
 
 	BOOST_CHECK_EQUAL (document.string_child("J/K"), "jim");
+	BOOST_CHECK (!document.optional_bool_child("G"));
 }

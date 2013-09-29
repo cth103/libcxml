@@ -57,11 +57,17 @@ cxml::Node::optional_node_child (string name) const
 list<shared_ptr<cxml::Node> >
 cxml::Node::node_children (string name) const
 {
-	xmlpp::NodeSet c = _node->find (name);
+	/* XXX: using find / get_path should work here, but I can't follow
+	   how get_path works.
+	*/
+
+	xmlpp::Node::NodeList c = _node->get_children ();
 	
 	list<shared_ptr<cxml::Node> > n;
-	for (xmlpp::NodeSet::iterator i = c.begin (); i != c.end(); ++i) {
-		n.push_back (shared_ptr<Node> (new Node (*i)));
+	for (xmlpp::Node::NodeList::iterator i = c.begin (); i != c.end(); ++i) {
+		if ((*i)->get_name() == name) {
+			n.push_back (shared_ptr<Node> (new Node (*i)));
+		}
 	}
 	
 	_taken.push_back (name);
