@@ -1,5 +1,5 @@
 APPNAME = 'libcxml'
-VERSION = '0.07pre'
+VERSION = '0.08pre'
 
 def options(opt):
     opt.load('compiler_cxx')
