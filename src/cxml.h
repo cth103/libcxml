@@ -169,6 +169,8 @@ private:
 	mutable std::list<Glib::ustring> _taken;
 };
 
+typedef boost::shared_ptr<cxml::Node> NodePtr;
+
 class Document : public Node
 {
 public:
