@@ -17,6 +17,7 @@
 
 */
 
+#include <iostream>
 #include <cmath>
 #include <boost/filesystem.hpp>
 #include <libxml++/libxml++.h>
