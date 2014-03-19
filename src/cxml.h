@@ -175,6 +175,7 @@ class Document : public Node
 {
 public:
 	Document (std::string root_name);
+	Document (std::string root_name, boost::filesystem::path);
 
 	void read_file (boost::filesystem::path);
 	void read_stream (std::istream &);

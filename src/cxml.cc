@@ -214,6 +214,13 @@ cxml::Document::Document (string root_name)
 	_parser = new xmlpp::DomParser;
 }
 
+cxml::Document::Document (string root_name, boost::filesystem::path file)
+	: _root_name (root_name)
+{
+	_parser = new xmlpp::DomParser ();
+	read_file (file);
+}
+
 cxml::Document::~Document ()
 {
 	delete _parser;
