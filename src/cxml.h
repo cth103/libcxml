@@ -178,7 +178,7 @@ public:
 		u.imbue (std::locale::classic ());
 		u << t;
 		T n;
-		t >> n;
+		u >> n;
 		return n;
 	}
 
