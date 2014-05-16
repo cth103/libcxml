@@ -208,6 +208,7 @@ private:
 };
 
 typedef boost::shared_ptr<cxml::Node> NodePtr;
+typedef boost::shared_ptr<const cxml::Node> ConstNodePtr;
 
 class Document : public Node
 {
