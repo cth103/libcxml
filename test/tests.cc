@@ -69,10 +69,13 @@ BOOST_AUTO_TEST_CASE (test)
 
 	BOOST_CHECK (!document.optional_bool_child("G"));
 
-	BOOST_CHECK_EQUAL (document.node_children("H/I").size(), 2);
-	BOOST_CHECK_EQUAL (document.node_children("H/I").front()->content(), "testing");
-	BOOST_CHECK_EQUAL (document.node_children("H/I").back()->content(), "more testing");
+	list<shared_ptr<cxml::Node> > h = document.node_children ("H");
+	BOOST_CHECK_EQUAL (h.size(), 1);
+	BOOST_CHECK_EQUAL (h.front()->node_children("I").size(), 2);
+	BOOST_CHECK_EQUAL (h.front()->node_children("I").front()->content(), "testing");
+	BOOST_CHECK_EQUAL (h.front()->node_children("I").back()->content(), "more testing");
 
-	BOOST_CHECK_EQUAL (document.string_child("J/K"), "jim");
-	BOOST_CHECK (!document.optional_bool_child("G"));
+	BOOST_CHECK_EQUAL (document.node_children("J").size(), 1);
+	BOOST_CHECK_EQUAL (document.node_children("J").front()->node_children("K").size(), 1);
+	BOOST_CHECK_EQUAL (document.node_children("J").front()->node_children("K").front()->content(), "jim");
 }

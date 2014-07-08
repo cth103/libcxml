@@ -213,14 +213,19 @@ typedef boost::shared_ptr<const cxml::Node> ConstNodePtr;
 class Document : public Node
 {
 public:
+	Document ();
 	Document (std::string root_name);
 	Document (std::string root_name, boost::filesystem::path);
+
+	virtual ~Document ();
 
 	void read_file (boost::filesystem::path);
 	void read_stream (std::istream &);
 	
-	virtual ~Document ();
-
+	std::string root_name () const {
+		return _root_name;
+	}
+	       
 private:
 	void take_root_node ();
 	

@@ -239,6 +239,11 @@ cxml::Document::Document (string root_name, boost::filesystem::path file)
 	read_file (file);
 }
 
+cxml::Document::Document ()
+{
+	_parser = new xmlpp::DomParser ();
+}
+
 cxml::Document::~Document ()
 {
 	delete _parser;
@@ -270,8 +275,10 @@ cxml::Document::take_root_node ()
 	}
 
 	_node = _parser->get_document()->get_root_node ();
-	if (_node->get_name() != _root_name) {
+	if (!_root_name.empty() && _node->get_name() != _root_name) {
 		throw cxml::Error ("unrecognised root node");
+	} else if (_root_name.empty ()) {
+		_root_name = _node->get_name ();
 	}
 }
 
