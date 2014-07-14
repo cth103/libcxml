@@ -35,7 +35,9 @@ def configure(conf):
                               int main() {}
                               """,
                               msg='Checking for boost unit testing library',
-                              lib=['boost_unit_test_framework%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
+                              lib=['boost_unit_test_framework%s' % boost_lib_suffix,
+                                   'boost_test_exec_monitor%s' % boost_lib_suffix,
+                                   'boost_system%s' % boost_lib_suffix],
                               uselib_store='BOOST_TEST')
 
     conf.recurse('test')
