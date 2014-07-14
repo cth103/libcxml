@@ -5,6 +5,7 @@ def options(opt):
     opt.load('compiler_cxx')
     opt.add_option('--target-windows', action='store_true', default=False, help='set up to do a cross-compile to Windows')
     opt.add_option('--static', action='store_true', default=False, help='build statically')
+    opt.add_option('--disable-tests', action='store_true', default=False, help='disable building of tests')
 
 def configure(conf):
     conf.load('compiler_cxx')
@@ -12,6 +13,7 @@ def configure(conf):
 
     conf.env.TARGET_WINDOWS = conf.options.target_windows
     conf.env.STATIC = conf.options.static
+    conf.env.DISABLE_TESTS = conf.options.disable_tests
 
     if conf.options.target_windows:
         boost_lib_suffix = '-mt'
@@ -28,19 +30,18 @@ def configure(conf):
                    libpath='/usr/local/lib',
                    lib=['boost_filesystem%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
                    uselib_store='BOOST_FILESYSTEM')
+    
+    if not conf.options.disable_tests:
+        conf.check_cxx(fragment="""
+                                  #define BOOST_TEST_MODULE Config test\n
+    	                          #include <boost/test/unit_test.hpp>\n
+                                  int main() {}
+                                  """,
+                                  msg='Checking for boost unit testing library',
+                                  lib=['boost_unit_test_framework%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
+                                  uselib_store='BOOST_TEST')
 
-    conf.check_cxx(fragment="""
-                              #define BOOST_TEST_MODULE Config test\n
-    			      #include <boost/test/unit_test.hpp>\n
-                              int main() {}
-                              """,
-                              msg='Checking for boost unit testing library',
-                              lib=['boost_unit_test_framework%s' % boost_lib_suffix,
-                                   'boost_test_exec_monitor%s' % boost_lib_suffix,
-                                   'boost_system%s' % boost_lib_suffix],
-                              uselib_store='BOOST_TEST')
-
-    conf.recurse('test')
+        conf.recurse('test')
 
 def build(bld):
 
@@ -51,4 +52,5 @@ def build(bld):
         install_path='${LIBDIR}/pkgconfig')
 
     bld.recurse('src')
-    bld.recurse('test')
+    if not bld.env.DISABLE_TESTS:
+        bld.recurse('test')
