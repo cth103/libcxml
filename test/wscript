@@ -2,7 +2,7 @@ def configure(conf):
     conf.env.prepend_value('LINKFLAGS', '-Lsrc')
 
 def build(bld):
-    obj = bld(features = 'cxx cxxprogram')
+    obj = bld(features='cxx cxxprogram')
     obj.name   = 'tests'
     obj.uselib = 'BOOST_TEST BOOST_FILESYSTEM'
     obj.use    = 'libcxml'

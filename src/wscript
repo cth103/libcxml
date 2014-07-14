@@ -1,8 +1,8 @@
 def build(bld):
     if bld.env.STATIC:
-        obj = bld(features = 'cxx cxxstlib')
+        obj = bld(features='cxx cxxstlib')
     else:
-        obj = bld(features = 'cxx cxxshlib')
+        obj = bld(features='cxx cxxshlib')
     obj.name = 'libcxml'
     obj.target = 'cxml'
     obj.export_includes = ['.']
