@@ -221,6 +221,7 @@ public:
 
 	void read_file (boost::filesystem::path);
 	void read_stream (std::istream &);
+	void read_string (std::string);
 	
 	std::string root_name () const {
 		return _root_name;

@@ -268,6 +268,14 @@ cxml::Document::read_stream (istream& stream)
 }
 
 void
+cxml::Document::read_string (string s)
+{
+	stringstream t (s);
+	_parser->parse_stream (t);
+	take_root_node ();
+}
+
+void
 cxml::Document::take_root_node ()
 {
 	if (!_parser) {
