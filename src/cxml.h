@@ -29,6 +29,11 @@
 #include <boost/algorithm/string/erase.hpp>
 #include <glibmm.h>
 
+/* Hack for OS X compile failure; see https://bugs.launchpad.net/hugin/+bug/910160 */
+#ifdef check
+#undef check
+#endif
+
 namespace xmlpp {
 	class Node;
 	class DomParser;
