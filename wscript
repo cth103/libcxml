@@ -1,5 +1,5 @@
 APPNAME = 'libcxml'
-VERSION = '0.10.0devel'
+VERSION = '0.11.0'
 API_VERSION = '0.0.0'
 
 def options(opt):
