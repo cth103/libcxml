@@ -1,5 +1,6 @@
 APPNAME = 'libcxml'
 VERSION = '0.10.0devel'
+API_VERSION = '0.0.0'
 
 def options(opt):
     opt.load('compiler_cxx')
@@ -14,6 +15,7 @@ def configure(conf):
     conf.env.TARGET_WINDOWS = conf.options.target_windows
     conf.env.STATIC = conf.options.static
     conf.env.DISABLE_TESTS = conf.options.disable_tests
+    conf.env.API_VERSION = API_VERSION
 
     if conf.options.target_windows:
         boost_lib_suffix = '-mt'

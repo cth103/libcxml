@@ -4,6 +4,7 @@ def build(bld):
     else:
         obj = bld(features='cxx cxxshlib')
     obj.name = 'libcxml'
+    obj.vnum = bld.env.API_VERSION
     obj.target = 'cxml'
     obj.export_includes = ['.']
     obj.uselib = 'LIBXML++ BOOST_FILESYSTEM'
