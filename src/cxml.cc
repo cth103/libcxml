@@ -253,7 +253,7 @@ void
 cxml::Document::read_file (filesystem::path file)
 {
 	if (!filesystem::exists (file)) {
-		throw cxml::Error ("XML file does not exist");
+		throw cxml::Error ("XML file " + file.string() + " does not exist");
 	}
 	
 	_parser->parse_file (file.string ());
