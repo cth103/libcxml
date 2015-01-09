@@ -142,12 +142,12 @@ cxml::Node::string_attribute (string name) const
 {
 	xmlpp::Element const * e = dynamic_cast<const xmlpp::Element *> (_node);
 	if (!e) {
-		throw cxml::Error ("missing attribute");
+		throw cxml::Error ("missing attribute " + name);
 	}
 	
 	xmlpp::Attribute* a = e->get_attribute (name);
 	if (!a) {
-		throw cxml::Error ("missing attribute");
+		throw cxml::Error ("missing attribute " + name);
 	}
 
 	return a->get_value ();
