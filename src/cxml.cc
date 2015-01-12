@@ -284,7 +284,7 @@ cxml::Document::take_root_node ()
 
 	_node = _parser->get_document()->get_root_node ();
 	if (!_root_name.empty() && _node->get_name() != _root_name) {
-		throw cxml::Error ("unrecognised root node");
+		throw cxml::Error ("unrecognised root node " + _node->get_name() + "(expecting " + _root_name + ")");
 	} else if (_root_name.empty ()) {
 		_root_name = _node->get_name ();
 	}
