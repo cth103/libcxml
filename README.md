@@ -28,6 +28,7 @@ For example:
 For full details, see src/cxml.h
 
 To build:
+
     ./waf configure
     ./waf build
     sudo ./waf install
