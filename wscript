@@ -10,7 +10,7 @@ def options(opt):
 
 def configure(conf):
     conf.load('compiler_cxx')
-    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2'])
+    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-std=c++98'])
 
     conf.env.TARGET_WINDOWS = conf.options.target_windows
     conf.env.STATIC = conf.options.static
@@ -32,7 +32,7 @@ def configure(conf):
                    libpath='/usr/local/lib',
                    lib=['boost_filesystem%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
                    uselib_store='BOOST_FILESYSTEM')
-    
+
     if not conf.options.disable_tests:
         conf.check_cxx(fragment="""
                                   #define BOOST_TEST_MODULE Config test\n
