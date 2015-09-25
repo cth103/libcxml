@@ -9,7 +9,7 @@ def build(target, options):
             # build as test/tests.cc defines BOOST_TEST_DYN_LINK
             cmd += ' --disable-tests'
         if target.distro == 'debian' and target.version == 'unstable':
-            cmd += ' --check-cxx-compiler=g++-4.9'
+            cmd = 'CXX=g++-4.9 ' + cmd
     elif target.platform == 'windows':
         cmd += ' --target-windows'
     target.command(cmd)
