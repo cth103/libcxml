@@ -4,7 +4,7 @@ def configure(conf):
 def build(bld):
     obj = bld(features='cxx cxxprogram')
     obj.name   = 'tests'
-    obj.uselib = 'BOOST_TEST BOOST_FILESYSTEM'
+    obj.uselib = 'BOOST_TEST BOOST_FILESYSTEM LIBXML++'
     obj.use    = 'libcxml'
     obj.source = 'tests.cc'
     obj.target = 'tests'
