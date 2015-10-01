@@ -24,8 +24,12 @@
 #include <libxml++/libxml++.h>
 #include "cxml.h"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::stringstream;
+using std::istream;
+using std::list;
+using boost::shared_ptr;
+using boost::optional;
 
 cxml::Node::Node ()
 	: _node (0)
@@ -55,7 +59,7 @@ cxml::Node::node_child (string name) const
 	} else if (n.empty ()) {
 		throw cxml::Error ("missing XML tag " + name + " in " + _node->get_name());
 	}
-	
+
 	return n.front ();
 }
 
@@ -68,7 +72,7 @@ cxml::Node::optional_node_child (string name) const
 	} else if (n.empty ()) {
 		return shared_ptr<cxml::Node> ();
 	}
-	
+
 	return n.front ();
 }
 
@@ -80,14 +84,14 @@ cxml::Node::node_children (string name) const
 	*/
 
 	xmlpp::Node::NodeList c = _node->get_children ();
-	
+
 	list<shared_ptr<cxml::Node> > n;
 	for (xmlpp::Node::NodeList::iterator i = c.begin (); i != c.end(); ++i) {
 		if ((*i)->get_name() == name) {
 			n.push_back (shared_ptr<Node> (new Node (*i)));
 		}
 	}
-	
+
 	_taken.push_back (name);
 	return n;
 }
@@ -127,7 +131,7 @@ cxml::Node::optional_bool_child (string c) const
 	if (!s) {
 		return optional<bool> ();
 	}
-	
+
 	return (s.get() == "1" || s.get() == "yes");
 }
 
@@ -144,7 +148,7 @@ cxml::Node::string_attribute (string name) const
 	if (!e) {
 		throw cxml::Error ("missing attribute " + name);
 	}
-	
+
 	xmlpp::Attribute* a = e->get_attribute (name);
 	if (!a) {
 		throw cxml::Error ("missing attribute " + name);
@@ -160,7 +164,7 @@ cxml::Node::optional_string_attribute (string name) const
 	if (!e) {
 		return optional<string> ();
 	}
-	
+
 	xmlpp::Attribute* a = e->get_attribute (name);
 	if (!a) {
 		return optional<string> ();
@@ -202,7 +206,7 @@ string
 cxml::Node::content () const
 {
 	string content;
-	
+
         xmlpp::Node::NodeList c = _node->get_children ();
 	for (xmlpp::Node::NodeList::const_iterator i = c.begin(); i != c.end(); ++i) {
 		xmlpp::ContentNode const * v = dynamic_cast<xmlpp::ContentNode const *> (*i);
@@ -250,12 +254,12 @@ cxml::Document::~Document ()
 }
 
 void
-cxml::Document::read_file (filesystem::path file)
+cxml::Document::read_file (boost::filesystem::path file)
 {
-	if (!filesystem::exists (file)) {
+	if (!boost::filesystem::exists (file)) {
 		throw cxml::Error ("XML file " + file.string() + " does not exist");
 	}
-	
+
 	_parser->parse_file (file.string ());
 	take_root_node ();
 }
@@ -289,4 +293,3 @@ cxml::Document::take_root_node ()
 		_root_name = _node->get_name ();
 	}
 }
-
