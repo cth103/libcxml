@@ -10,7 +10,7 @@ def options(opt):
 
 def configure(conf):
     conf.load('compiler_cxx')
-    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-std=c++98'])
+    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2'])
 
     conf.env.TARGET_WINDOWS = conf.options.target_windows
     conf.env.STATIC = conf.options.static
