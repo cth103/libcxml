@@ -33,8 +33,6 @@
 #undef check
 #endif
 
-#include <glibmm.h>
-
 namespace xmlpp {
 	class Node;
 	class DomParser;
@@ -71,7 +69,7 @@ class Node
 {
 public:
 	Node ();
-	
+
 	/** Construct a Node from an xmlpp::Node.  This class will
 	 *  not destroy the xmlpp::Node.
 	 *  @param node xmlpp::Node.
@@ -138,7 +136,7 @@ public:
 		u >> n;
 		return n;
 	}
-		
+
 	/** This will mark a child as to be ignored when calling done() */
 	void ignore_child (std::string) const;
 
@@ -205,12 +203,12 @@ public:
 	xmlpp::Node* node () const {
 		return _node;
 	}
-	
+
 protected:
 	xmlpp::Node* _node;
-	
+
 private:
-	mutable std::list<Glib::ustring> _taken;
+	mutable std::list<std::string> _taken;
 };
 
 typedef boost::shared_ptr<cxml::Node> NodePtr;
@@ -228,14 +226,14 @@ public:
 	void read_file (boost::filesystem::path);
 	void read_stream (std::istream &);
 	void read_string (std::string);
-	
+
 	std::string root_name () const {
 		return _root_name;
 	}
-	       
+
 private:
 	void take_root_node ();
-	
+
 	xmlpp::DomParser* _parser;
 	std::string _root_name;
 };
