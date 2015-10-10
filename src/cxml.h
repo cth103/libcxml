@@ -20,13 +20,14 @@
 #ifndef LIBCXML_CXML_H
 #define LIBCXML_CXML_H
 
-#include <string>
-#include <list>
-#include <stdint.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/erase.hpp>
+#include <stdint.h>
+#include <string>
+#include <sstream>
+#include <list>
 
 /* Hack for OS X compile failure; see https://bugs.launchpad.net/hugin/+bug/910160 */
 #ifdef check
