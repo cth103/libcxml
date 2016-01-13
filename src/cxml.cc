@@ -121,7 +121,7 @@ bool
 cxml::Node::bool_child (string c) const
 {
 	string const s = string_child (c);
-	return (s == "1" || s == "yes");
+	return (s == "1" || s == "yes" || s == "True");
 }
 
 optional<bool>
@@ -132,7 +132,7 @@ cxml::Node::optional_bool_child (string c) const
 		return optional<bool> ();
 	}
 
-	return (s.get() == "1" || s.get() == "yes");
+	return (s.get() == "1" || s.get() == "yes" || s.get() == "True");
 }
 
 void
