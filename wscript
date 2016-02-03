@@ -1,3 +1,5 @@
+from waflib import Context
+
 APPNAME = 'libcxml'
 VERSION = '0.15.0devel'
 API_VERSION = '0.0.0'
@@ -45,6 +47,13 @@ def configure(conf):
 
         conf.recurse('test')
 
+    # libxml++ 2.39.1 and later must be built with -std=c++11
+    libxmlpp_version = conf.cmd_and_log(['pkg-config', '--modversion', 'libxml++-2.6'], output=Context.STDOUT, quiet=Context.BOTH)
+    s = libxmlpp_version.split('.')
+    v = (int(s[0]) << 16) | (int(s[1]) << 8) | int(s[2])
+    if v >= 0x022701:
+        conf.env.append_value('CXXFLAGS', '-std=c++11')
+        
 def build(bld):
 
     bld(source='libcxml.pc.in',
