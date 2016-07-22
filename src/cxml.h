@@ -1,32 +1,33 @@
 /*
-    Copyright (C) 2012-2014 Carl Hetherington <cth@carlh.net>
+    Copyright (C) 2012-2016 Carl Hetherington <cth@carlh.net>
 
-    This program is free software; you can redistribute it and/or modify
+    This file is part of libcxml.
+
+    libcxml is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    libcxml is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+    along with libcxml.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
 #ifndef LIBCXML_CXML_H
 #define LIBCXML_CXML_H
 
+#include <locked_sstream.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/erase.hpp>
 #include <stdint.h>
 #include <string>
-#include <sstream>
 #include <list>
 
 /* Hack for OS X compile failure; see https://bugs.launchpad.net/hugin/+bug/910160 */
@@ -112,7 +113,7 @@ public:
 	{
 		std::string s = string_child (c);
 		boost::erase_all (s, " ");
-		std::stringstream t;
+		locked_stringstream t;
 		t.imbue (std::locale::classic ());
 		t << s;
 		T n;
@@ -130,7 +131,7 @@ public:
 
 		std::string t = s.get ();
 		boost::erase_all (t, " ");
-		std::stringstream u;
+		locked_stringstream u;
 		u.imbue (std::locale::classic ());
 		u << t;
 		T n;
@@ -161,7 +162,7 @@ public:
 	{
 		std::string s = string_attribute (c);
 		boost::erase_all (s, " ");
-		std::stringstream t;
+		locked_stringstream t;
 		t.imbue (std::locale::classic ());
 		t << s;
 		T n;
@@ -179,7 +180,7 @@ public:
 
 		std::string t = s.get ();
 		boost::erase_all (t, " ");
-		std::stringstream u;
+		locked_stringstream u;
 		u.imbue (std::locale::classic ());
 		u << t;
 		T n;
@@ -225,7 +226,6 @@ public:
 	virtual ~Document ();
 
 	void read_file (boost::filesystem::path);
-	void read_stream (std::istream &);
 	void read_string (std::string);
 
 	std::string root_name () const {

@@ -1,32 +1,29 @@
 /*
-    Copyright (C) 2012-2014 Carl Hetherington <cth@carlh.net>
+    Copyright (C) 2012-2016 Carl Hetherington <cth@carlh.net>
 
-    This program is free software; you can redistribute it and/or modify
+    This file is part of libcxml.
+
+    libcxml is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    libcxml is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+    along with libcxml.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include <sstream>
-#include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 #include <libxml++/libxml++.h>
 #include "cxml.h"
 
 using std::string;
-using std::stringstream;
-using std::istream;
 using std::list;
 using boost::shared_ptr;
 using boost::optional;
@@ -265,17 +262,9 @@ cxml::Document::read_file (boost::filesystem::path file)
 }
 
 void
-cxml::Document::read_stream (istream& stream)
-{
-	_parser->parse_stream (stream);
-	take_root_node ();
-}
-
-void
 cxml::Document::read_string (string s)
 {
-	stringstream t (s);
-	_parser->parse_stream (t);
+	_parser->parse_memory (s);
 	take_root_node ();
 }
 
