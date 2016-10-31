@@ -45,6 +45,7 @@ def configure(conf):
         boost_lib_suffix = ''
 
     conf.check_cfg(package='libxml++-2.6', args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
+    conf.check_cfg(package='locked_sstream', args='--cflags --libs', uselib_store='LOCKED_SSTREAM', mandatory=True)
 
     conf.check_cxx(fragment="""
  		   #include <boost/filesystem.hpp>\n

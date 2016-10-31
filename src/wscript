@@ -27,7 +27,7 @@ def build(bld):
     obj.vnum = bld.env.API_VERSION
     obj.target = 'cxml'
     obj.export_includes = ['.']
-    obj.uselib = 'LIBXML++ BOOST_FILESYSTEM'
+    obj.uselib = 'LIBXML++ BOOST_FILESYSTEM LOCKED_SSTREAM'
     obj.source = "cxml.cc"
 
     bld.install_files('${PREFIX}/include/libcxml', "cxml.h")

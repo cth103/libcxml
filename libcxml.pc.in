@@ -5,6 +5,6 @@ includedir=@includedir@
 Name: libcxml
 Description: Library to simplify XML parsing with libxml++
 Version: @version@
-Requires: libxml++-2.6 glibmm-2.4
+Requires: libxml++-2.6 glibmm-2.4 locked_sstream
 Libs: @libs@
 Cflags: -I${includedir}
