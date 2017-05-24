@@ -74,6 +74,19 @@ cxml::Node::optional_node_child (string name) const
 }
 
 list<shared_ptr<cxml::Node> >
+cxml::Node::node_children () const
+{
+	xmlpp::Node::NodeList c = _node->get_children ();
+
+	list<shared_ptr<cxml::Node> > n;
+	for (xmlpp::Node::NodeList::iterator i = c.begin (); i != c.end(); ++i) {
+		n.push_back (shared_ptr<Node> (new Node (*i)));
+	}
+
+	return n;
+}
+
+list<shared_ptr<cxml::Node> >
 cxml::Node::node_children (string name) const
 {
 	/* XXX: using find / get_path should work here, but I can't follow

@@ -200,6 +200,7 @@ public:
 	boost::shared_ptr<Node> node_child (std::string) const;
 	boost::shared_ptr<Node> optional_node_child (std::string) const;
 
+	std::list<boost::shared_ptr<Node> > node_children () const;
 	std::list<boost::shared_ptr<Node> > node_children (std::string) const;
 
 	xmlpp::Node* node () const {
