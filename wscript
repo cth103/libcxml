@@ -1,6 +1,6 @@
 # -*- mode: python -*-
 #
-#    Copyright (C) 2016 Carl Hetherington <cth@carlh.net>
+#    Copyright (C) 2016-2017 Carl Hetherington <cth@carlh.net>
 #
 #    This file is part of libcxml.
 #
@@ -29,10 +29,13 @@ def options(opt):
     opt.add_option('--target-windows', action='store_true', default=False, help='set up to do a cross-compile to Windows')
     opt.add_option('--static', action='store_true', default=False, help='build statically')
     opt.add_option('--disable-tests', action='store_true', default=False, help='disable building of tests')
+    opt.add_option('--force-cpp11', action='store_true', default=False, help='force use of C++11')
 
 def configure(conf):
     conf.load('compiler_cxx')
     conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2'])
+    if conf.options.force_cpp11:
+        conf.env.append_value('CXXFLAGS', ['-std=c++11', '-DBOOST_NO_CXX11_SCOPED_ENUMS'])
 
     conf.env.TARGET_WINDOWS = conf.options.target_windows
     conf.env.STATIC = conf.options.static
@@ -67,13 +70,6 @@ def configure(conf):
                                   uselib_store='BOOST_TEST')
 
         conf.recurse('test')
-
-    # libxml++ 2.39.1 and later must be built with -std=c++11
-    libxmlpp_version = conf.cmd_and_log(['pkg-config', '--modversion', 'libxml++-2.6'], output=Context.STDOUT, quiet=Context.BOTH)
-    s = libxmlpp_version.split('.')
-    v = (int(s[0]) << 16) | (int(s[1]) << 8) | int(s[2])
-    if v >= 0x022701:
-        conf.env.append_value('CXXFLAGS', '-std=c++11')
 
 def build(bld):
 
