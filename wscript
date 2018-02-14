@@ -27,12 +27,15 @@ API_VERSION = '0.0.0'
 def options(opt):
     opt.load('compiler_cxx')
     opt.add_option('--target-windows', action='store_true', default=False, help='set up to do a cross-compile to Windows')
+    opt.add_option('--enable-debug', action='store_true', default=False, help='build with debugging information and without optimisation')
     opt.add_option('--static', action='store_true', default=False, help='build statically')
     opt.add_option('--disable-tests', action='store_true', default=False, help='disable building of tests')
     opt.add_option('--force-cpp11', action='store_true', default=False, help='force use of C++11')
 
 def configure(conf):
     conf.load('compiler_cxx')
+    if conf.options.enable_debug:
+        conf.env.append_value('CXXFLAGS', '-g')
     conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2'])
     if conf.options.force_cpp11:
         conf.env.append_value('CXXFLAGS', ['-std=c++11', '-DBOOST_NO_CXX11_SCOPED_ENUMS'])
