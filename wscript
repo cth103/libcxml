@@ -21,7 +21,7 @@
 from waflib import Context
 
 APPNAME = 'libcxml'
-VERSION = '0.15.4devel'
+VERSION = '0.15.5'
 API_VERSION = '0.0.0'
 
 def options(opt):
