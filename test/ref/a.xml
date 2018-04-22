@@ -5,6 +5,6 @@
   <E>yes</E>
   <F>1</F>
   <F>2</F>
-  <H><I>testing</I><I>more testing</I></H>
+  <H><I>testing</I><I><!-- ignore this -->more testing</I></H>
   <J><K>jim</K></J>
 </A>

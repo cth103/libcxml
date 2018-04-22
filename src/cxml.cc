@@ -220,7 +220,7 @@ cxml::Node::content () const
         xmlpp::Node::NodeList c = _node->get_children ();
 	for (xmlpp::Node::NodeList::const_iterator i = c.begin(); i != c.end(); ++i) {
 		xmlpp::ContentNode const * v = dynamic_cast<xmlpp::ContentNode const *> (*i);
-		if (v) {
+		if (v && dynamic_cast<xmlpp::TextNode const *>(v)) {
 			content += v->get_content ();
 		}
 	}
