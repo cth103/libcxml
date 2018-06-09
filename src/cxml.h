@@ -188,7 +188,7 @@ public:
 		return n;
 	}
 
-	/** @return The text content of this node (including comments or CDATA) */
+	/** @return The text content of this node (excluding comments or CDATA) */
 	std::string content () const;
 
 	/** @return namespace URI of this node */
