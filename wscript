@@ -1,6 +1,6 @@
 # -*- mode: python -*-
 #
-#    Copyright (C) 2016-2017 Carl Hetherington <cth@carlh.net>
+#    Copyright (C) 2016-2018 Carl Hetherington <cth@carlh.net>
 #
 #    This file is part of libcxml.
 #
@@ -18,10 +18,25 @@
 #    along with libcxml.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import subprocess
+import shlex
 from waflib import Context
 
 APPNAME = 'libcxml'
-VERSION = '0.15.5devel'
+
+this_version = subprocess.Popen(shlex.split('git tag -l --points-at HEAD'), stdout=subprocess.PIPE).communicate()[0]
+last_version = subprocess.Popen(shlex.split('git describe --tags --abbrev=0'), stdout=subprocess.PIPE).communicate()[0]
+
+if isinstance(this_version, bytes):
+    this_version = this_version.decode('UTF-8')
+if isinstance(last_version, bytes):
+    last_version = last_version.decode('UTF-8')
+
+if this_version == '':
+    VERSION = '%sdevel' % last_version[1:].strip()
+else:
+    VERSION = this_version[1:].strip()
+
 API_VERSION = '0.0.0'
 
 def options(opt):
