@@ -43,7 +43,9 @@ cxml::Node::Node (xmlpp::Node* node)
 string
 cxml::Node::name () const
 {
-	assert (_node);
+	if (!_node) {
+		throw Error ("No node to read name from");
+	}
 	return _node->get_name ();
 }
 
@@ -76,6 +78,9 @@ cxml::Node::optional_node_child (string name) const
 list<shared_ptr<cxml::Node> >
 cxml::Node::node_children () const
 {
+	if (!_node) {
+		throw Error ("No node to read children from");
+	}
 	xmlpp::Node::NodeList c = _node->get_children ();
 
 	list<shared_ptr<cxml::Node> > n;
