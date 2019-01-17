@@ -21,7 +21,7 @@
 import os
 
 def dependencies(target):
-    return (('locked_sstream', '7ab4a63'),)
+    return (('locked_sstream', '1edc182'),)
 
 def build(target, options):
     cmd = './waf configure --prefix=%s' % target.directory
