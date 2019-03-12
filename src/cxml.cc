@@ -300,3 +300,71 @@ cxml::Document::take_root_node ()
 		_root_name = _node->get_name ();
 	}
 }
+
+static
+string
+make_local (string v)
+{
+	struct lconv* lc = localeconv ();
+	boost::algorithm::replace_all (v, ".", lc->decimal_point);
+	/* We hope it's ok not to add in thousands separators here */
+	return v;
+}
+
+template <typename P, typename Q>
+P
+locale_convert (Q x)
+{
+	/* We can't write a generic version of locale_convert; all required
+	   versions must be specialised.
+	*/
+	BOOST_STATIC_ASSERT (sizeof(Q) == 0);
+}
+
+template<>
+int
+locale_convert (string x)
+{
+	int y = 0;
+	sscanf (x.c_str(), "%d", &y);
+	return y;
+}
+
+template<>
+float
+locale_convert (string x)
+{
+	float y = 0;
+	sscanf (x.c_str(), "%f", &y);
+	return y;
+}
+
+template <>
+double
+locale_convert (string x)
+{
+	double y = 0;
+	sscanf (x.c_str(), "%lf", &y);
+	return y;
+}
+
+template <>
+int
+cxml::raw_convert (string v)
+{
+	return locale_convert<int> (make_local(v));
+}
+
+template <>
+float
+cxml::raw_convert (string v)
+{
+	return locale_convert<float> (make_local(v));
+}
+
+template <>
+double
+cxml::raw_convert (string v)
+{
+	return locale_convert<double> (make_local(v));
+}

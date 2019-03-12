@@ -46,7 +46,7 @@ def configure(conf):
     conf.load('compiler_cxx')
     if conf.options.enable_debug:
         conf.env.append_value('CXXFLAGS', '-g')
-    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2'])
+    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-Wno-deprecated-declarations'])
     if conf.options.force_cpp11:
         conf.env.append_value('CXXFLAGS', ['-std=c++11', '-DBOOST_NO_CXX11_SCOPED_ENUMS'])
 
@@ -61,7 +61,6 @@ def configure(conf):
         boost_lib_suffix = ''
 
     conf.check_cfg(package='libxml++-2.6', args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
-    conf.check_cfg(package='locked_sstream', args='--cflags --libs', uselib_store='LOCKED_SSTREAM', mandatory=True)
 
     conf.check_cxx(fragment="""
  		   #include <boost/filesystem.hpp>\n

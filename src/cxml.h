@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2012-2016 Carl Hetherington <cth@carlh.net>
+    Copyright (C) 2012-2019 Carl Hetherington <cth@carlh.net>
 
     This file is part of libcxml.
 
@@ -21,7 +21,6 @@
 #ifndef LIBCXML_CXML_H
 #define LIBCXML_CXML_H
 
-#include <locked_sstream.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
@@ -65,6 +64,31 @@ private:
 	/** error message */
 	std::string _message;
 };
+
+/** A sort-of version of boost::lexical_cast that does uses the "C"
+ *  locale (i.e. no thousands separators and a . for the decimal separator).
+ */
+template <typename P, typename Q>
+P
+raw_convert (Q v)
+{
+	/* We can't write a generic version of raw_convert; all required
+	   versions must be specialised.
+	*/
+	BOOST_STATIC_ASSERT (sizeof(Q) == 0);
+}
+
+template <>
+int
+raw_convert (std::string v);
+
+template <>
+float
+raw_convert (std::string v);
+
+template <>
+double
+raw_convert (std::string v);
 
 /** @brief A wrapper for a xmlpp::Node which simplifies parsing */
 class Node
@@ -113,12 +137,7 @@ public:
 	{
 		std::string s = string_child (c);
 		boost::erase_all (s, " ");
-		locked_stringstream t;
-		t.imbue (std::locale::classic ());
-		t << s;
-		T n;
-		t >> n;
-		return n;
+		return raw_convert<T> (s);
 	}
 
 	template <class T>
@@ -131,12 +150,7 @@ public:
 
 		std::string t = s.get ();
 		boost::erase_all (t, " ");
-		locked_stringstream u;
-		u.imbue (std::locale::classic ());
-		u << t;
-		T n;
-		u >> n;
-		return n;
+		return raw_convert<T> (t);
 	}
 
 	/** This will mark a child as to be ignored when calling done() */
@@ -162,12 +176,7 @@ public:
 	{
 		std::string s = string_attribute (c);
 		boost::erase_all (s, " ");
-		locked_stringstream t;
-		t.imbue (std::locale::classic ());
-		t << s;
-		T n;
-		t >> n;
-		return n;
+		return raw_convert<T> (s);
 	}
 
 	template <class T>
@@ -180,12 +189,7 @@ public:
 
 		std::string t = s.get ();
 		boost::erase_all (t, " ");
-		locked_stringstream u;
-		u.imbue (std::locale::classic ());
-		u << t;
-		T n;
-		u >> n;
-		return n;
+		return raw_convert<T> (t);
 	}
 
 	/** @return The text content of this node (excluding comments or CDATA) */
