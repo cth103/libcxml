@@ -331,6 +331,15 @@ locale_convert (string x)
 }
 
 template<>
+long int
+locale_convert (string x)
+{
+	long int y = 0;
+	sscanf (x.c_str(), "%ld", &y);
+	return y;
+}
+
+template<>
 float
 locale_convert (string x)
 {
@@ -353,6 +362,13 @@ int
 cxml::raw_convert (string v)
 {
 	return locale_convert<int> (make_local(v));
+}
+
+template <>
+long int
+cxml::raw_convert (string v)
+{
+	return locale_convert<long int> (make_local(v));
 }
 
 template <>
