@@ -83,6 +83,10 @@ int
 raw_convert (std::string v);
 
 template <>
+unsigned int
+raw_convert (std::string v);
+
+template <>
 long int
 raw_convert (std::string v);
 
