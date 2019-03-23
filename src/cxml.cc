@@ -349,6 +349,19 @@ locale_convert (string x)
 }
 
 template<>
+long long
+locale_convert (string x)
+{
+	long long y = 0;
+#ifdef LIBCXML_WINDOWS
+	__mingw_sscanf (x.c_str(), "%lld", &y);
+#else
+	sscanf (x.c_str(), "%lld", &y);
+#endif
+	return y;
+}
+
+template<>
 float
 locale_convert (string x)
 {
@@ -378,6 +391,13 @@ long int
 cxml::raw_convert (string v)
 {
 	return locale_convert<long int> (make_local(v));
+}
+
+template <>
+long long
+cxml::raw_convert (string v)
+{
+	return locale_convert<long long> (make_local(v));
 }
 
 template <>

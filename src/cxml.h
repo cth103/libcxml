@@ -91,6 +91,10 @@ long int
 raw_convert (std::string v);
 
 template <>
+long long
+raw_convert (std::string v);
+
+template <>
 float
 raw_convert (std::string v);
 

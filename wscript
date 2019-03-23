@@ -57,8 +57,10 @@ def configure(conf):
 
     if conf.options.target_windows:
         boost_lib_suffix = '-mt'
+        conf.env.append_value('CXXFLAGS', '-DLIBCXML_WINDOWS')
     else:
         boost_lib_suffix = ''
+        conf.env.append_value('CXXFLAGS', '-DLIBCXML_POSIX')
 
     conf.check_cfg(package='libxml++-2.6', args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
 
