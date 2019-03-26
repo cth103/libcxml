@@ -18,10 +18,11 @@
 
 */
 
+#include "cxml.h"
+#include <libxml++/libxml++.h>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
-#include <libxml++/libxml++.h>
-#include "cxml.h"
+#include <cstdio>
 
 using std::string;
 using std::list;
