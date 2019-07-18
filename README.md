@@ -27,13 +27,25 @@ For example:
 
 For full details, see src/cxml.h
 
-To build:
+Building
+-------
 
     ./waf configure
     ./waf build
     sudo ./waf install
 
+### Build options
+
+    --target-windows      set up to do a cross-compile to Windows
+    --enable-debug        build with debugging information and without optimisation
+    --static              build statically
+    --disable-tests       disable building of tests
+    --force-cpp11         force use of C++11
+
+### Dependencies
+
+- libxml++ (and libffi)
+
+
+---
 Bug reports and queries to Carl Hetherington <cth@carlh.net>
-
-
-
