@@ -91,7 +91,15 @@ long int
 raw_convert (std::string v);
 
 template <>
+long unsigned int
+raw_convert (std::string v);
+
+template <>
 long long
+raw_convert (std::string v);
+
+template <>
+long long unsigned
 raw_convert (std::string v);
 
 template <>

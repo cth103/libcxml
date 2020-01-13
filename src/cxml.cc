@@ -350,6 +350,19 @@ locale_convert (string x)
 }
 
 template<>
+long unsigned int
+locale_convert (string x)
+{
+        long unsigned int y = 0;
+#ifdef LIBCXML_WINDOWS
+        __mingw_sscanf (x.c_str(), "%lud", &y);
+#else
+        sscanf (x.c_str(), "%lud", &y);
+#endif
+        return y;
+}
+
+template<>
 long long
 locale_convert (string x)
 {
@@ -360,6 +373,19 @@ locale_convert (string x)
 	sscanf (x.c_str(), "%lld", &y);
 #endif
 	return y;
+}
+
+template<>
+long long unsigned
+locale_convert (string x)
+{
+	long long unsigned y = 0;
+#ifdef LIBCXML_WINDOWS
+        __mingw_sscanf (x.c_str(), "%llud", &y);
+#else
+        sscanf (x.c_str(), "%llud", &y);
+#endif
+        return y;
 }
 
 template<>
@@ -388,10 +414,24 @@ cxml::raw_convert (string v)
 }
 
 template <>
+unsigned int
+cxml::raw_convert (string v)
+{
+	return locale_convert<unsigned int> (make_local(v));
+}
+
+template <>
 long int
 cxml::raw_convert (string v)
 {
 	return locale_convert<long int> (make_local(v));
+}
+
+template <>
+long unsigned int
+cxml::raw_convert (string v)
+{
+	return locale_convert<long unsigned int> (make_local(v));
 }
 
 template <>
@@ -402,10 +442,10 @@ cxml::raw_convert (string v)
 }
 
 template <>
-unsigned int
+long long unsigned
 cxml::raw_convert (string v)
 {
-	return locale_convert<unsigned int> (make_local(v));
+	return locale_convert<long long unsigned> (make_local(v));
 }
 
 template <>
