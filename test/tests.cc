@@ -24,7 +24,7 @@
 #include "cxml.h"
 
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE libdcp_test
+#define BOOST_TEST_MODULE libcxml_test
 #include <boost/test/unit_test.hpp>
 
 using std::string;
