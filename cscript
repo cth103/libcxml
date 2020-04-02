@@ -1,6 +1,6 @@
 # -*- mode: python -*-
 #
-#    Copyright (C) 2016 Carl Hetherington <cth@carlh.net>
+#    Copyright (C) 2016-2020 Carl Hetherington <cth@carlh.net>
 #
 #    This file is part of libcxml.
 #
@@ -20,6 +20,8 @@
 
 import os
 
+option_defaults = { 'force-cpp11', False }
+
 def build(target, options):
     cmd = './waf configure --prefix=%s' % target.directory
     if target.platform == 'linux':
@@ -28,18 +30,25 @@ def build(target, options):
             # Centos builds using static boost, which means tests don't
             # build as test/tests.cc defines BOOST_TEST_DYN_LINK
             cmd += ' --disable-tests'
-            if target.version == '7':
-                # Centos 7 ships with glibmm 2.50.0 which requires C++11
-                # but its compiler (gcc 4.8.5) defaults to C++97.  Go figure.
-                # I worry that this will cause ABI problems but I don't have
-                # a better solution.
-                cmd += ' --force-cpp11'
-        if target.distro == 'mageia' and target.version == '6':
-            # Mageia 6 pulls the same stunt except it's libxml++ that requires C++11
-            cmd += ' --force-cpp11'
     elif target.platform == 'windows':
-        # Similarly with Windows
-        cmd += ' --force-cpp11 --target-windows'
+        cmd += ' --target-windows'
+
+    # Centos 7 ships with glibmm 2.50.0 which requires C++11
+    # but its compiler (gcc 4.8.5) defaults to C++97.  Go figure.
+    # I worry that this will cause ABI problems but I don't have
+    # a better solution.  Mageia 6 pulls the same stunt except it's
+    # libxml++ that requires C++11
+    force_cpp11 = False
+    if target.platform == 'linux':
+        if target.distro == 'centos' and target.version == '7':
+            force_cpp11 = True
+        if target.distro == 'mageia' and target.version == '6':
+            force_cpp11 = True
+    if target.platform == 'windows':
+        force_cpp11 = True
+    if force_cpp11 or options['force-cpp11']:
+        cmd += ' --force-cpp11'
+
     target.command(cmd)
     target.command('./waf build install')
 
