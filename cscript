@@ -20,7 +20,7 @@
 
 import os
 
-option_defaults = { 'force-cpp11', False }
+option_defaults = { 'force-cpp11': False }
 
 def build(target, options):
     cmd = './waf configure --prefix=%s' % target.directory
