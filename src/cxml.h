@@ -70,7 +70,7 @@ private:
  */
 template <typename P, typename Q>
 P
-raw_convert (Q v)
+raw_convert (Q)
 {
 	/* We can't write a generic version of raw_convert; all required
 	   versions must be specialised.
