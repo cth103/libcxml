@@ -1,4 +1,4 @@
-.waf-*
+.waf*
 .lock-waf*
 build
 core
