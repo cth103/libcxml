@@ -221,11 +221,11 @@ public:
 	/** @return namespace prefix of this node */
 	std::string namespace_prefix () const;
 
-	boost::shared_ptr<Node> node_child (std::string) const;
-	boost::shared_ptr<Node> optional_node_child (std::string) const;
+	std::shared_ptr<Node> node_child (std::string) const;
+	std::shared_ptr<Node> optional_node_child (std::string) const;
 
-	std::list<boost::shared_ptr<Node> > node_children () const;
-	std::list<boost::shared_ptr<Node> > node_children (std::string) const;
+	std::list<std::shared_ptr<Node> > node_children () const;
+	std::list<std::shared_ptr<Node> > node_children (std::string) const;
 
 	xmlpp::Node* node () const {
 		return _node;
@@ -238,8 +238,8 @@ private:
 	mutable std::list<std::string> _taken;
 };
 
-typedef boost::shared_ptr<cxml::Node> NodePtr;
-typedef boost::shared_ptr<const cxml::Node> ConstNodePtr;
+typedef std::shared_ptr<cxml::Node> NodePtr;
+typedef std::shared_ptr<const cxml::Node> ConstNodePtr;
 
 class Document : public Node
 {

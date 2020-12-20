@@ -26,7 +26,7 @@
 
 using std::string;
 using std::list;
-using boost::shared_ptr;
+using std::shared_ptr;
 using boost::optional;
 
 cxml::Node::Node ()

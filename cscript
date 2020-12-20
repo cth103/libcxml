@@ -20,8 +20,6 @@
 
 import os
 
-option_defaults = { 'force-cpp11': False }
-
 def build(target, options):
     cmd = './waf configure --prefix=%s' % target.directory
     if target.platform == 'linux':
@@ -32,22 +30,6 @@ def build(target, options):
             cmd += ' --disable-tests'
     elif target.platform == 'windows':
         cmd += ' --target-windows'
-
-    # Centos 7 ships with glibmm 2.50.0 which requires C++11
-    # but its compiler (gcc 4.8.5) defaults to C++97.  Go figure.
-    # I worry that this will cause ABI problems but I don't have
-    # a better solution.  Mageia 6 pulls the same stunt except it's
-    # libxml++ that requires C++11
-    force_cpp11 = False
-    if target.platform == 'linux':
-        if target.distro == 'centos' and target.version == '7':
-            force_cpp11 = True
-        if target.distro == 'mageia' and target.version == '6':
-            force_cpp11 = True
-    if target.platform == 'windows':
-        force_cpp11 = True
-    if force_cpp11 or options['force-cpp11']:
-        cmd += ' --force-cpp11'
 
     target.command(cmd)
     target.command('./waf build install')
