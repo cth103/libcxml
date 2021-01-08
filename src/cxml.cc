@@ -24,9 +24,9 @@
 #include <boost/algorithm/string.hpp>
 #include <cstdio>
 
-using std::string;
-using std::list;
 using std::shared_ptr;
+using std::string;
+using std::vector;
 using boost::optional;
 
 cxml::Node::Node ()
@@ -76,14 +76,14 @@ cxml::Node::optional_node_child (string name) const
 	return n.front ();
 }
 
-list<shared_ptr<cxml::Node>>
+vector<shared_ptr<cxml::Node>>
 cxml::Node::node_children () const
 {
 	if (!_node) {
 		throw Error ("No node to read children from");
 	}
 
-	list<shared_ptr<cxml::Node> > n;
+	vector<shared_ptr<cxml::Node> > n;
 	for (auto i: _node->get_children()) {
 		n.push_back (shared_ptr<Node> (new Node (i)));
 	}
@@ -91,14 +91,14 @@ cxml::Node::node_children () const
 	return n;
 }
 
-list<shared_ptr<cxml::Node>>
+vector<shared_ptr<cxml::Node>>
 cxml::Node::node_children (string name) const
 {
 	/* XXX: using find / get_path should work here, but I can't follow
 	   how get_path works.
 	*/
 
-	list<shared_ptr<cxml::Node> > n;
+	vector<shared_ptr<cxml::Node> > n;
 	for (auto i: _node->get_children()) {
 		if (i->get_name() == name) {
 			n.push_back (shared_ptr<Node> (new Node (i)));

@@ -26,7 +26,7 @@
 #include <boost/algorithm/string/erase.hpp>
 #include <stdint.h>
 #include <string>
-#include <list>
+#include <vector>
 
 /* Hack for OS X compile failure; see https://bugs.launchpad.net/hugin/+bug/910160 */
 #ifdef check
@@ -223,8 +223,8 @@ public:
 	std::shared_ptr<Node> node_child (std::string) const;
 	std::shared_ptr<Node> optional_node_child (std::string) const;
 
-	std::list<std::shared_ptr<Node> > node_children () const;
-	std::list<std::shared_ptr<Node> > node_children (std::string) const;
+	std::vector<std::shared_ptr<Node>> node_children () const;
+	std::vector<std::shared_ptr<Node>> node_children (std::string) const;
 
 	xmlpp::Node* node () const {
 		return _node;
@@ -234,7 +234,7 @@ protected:
 	xmlpp::Node* _node;
 
 private:
-	mutable std::list<std::string> _taken;
+	mutable std::vector<std::string> _taken;
 };
 
 typedef std::shared_ptr<cxml::Node> NodePtr;
