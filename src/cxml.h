@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2012-2019 Carl Hetherington <cth@carlh.net>
+    Copyright (C) 2012-2021 Carl Hetherington <cth@carlh.net>
 
     This file is part of libcxml.
 
@@ -21,7 +21,6 @@
 #ifndef LIBCXML_CXML_H
 #define LIBCXML_CXML_H
 
-#include <boost/shared_ptr.hpp>
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/erase.hpp>
@@ -155,7 +154,7 @@ public:
 	template <class T>
 	T number_child (std::string c) const
 	{
-		std::string s = string_child (c);
+		auto s = string_child (c);
 		boost::erase_all (s, " ");
 		return raw_convert<T> (s);
 	}
@@ -163,12 +162,12 @@ public:
 	template <class T>
 	boost::optional<T> optional_number_child (std::string c) const
 	{
-		boost::optional<std::string> s = optional_string_child (c);
+		auto s = optional_string_child (c);
 		if (!s) {
 			return boost::optional<T> ();
 		}
 
-		std::string t = s.get ();
+		auto t = s.get ();
 		boost::erase_all (t, " ");
 		return raw_convert<T> (t);
 	}
@@ -202,12 +201,12 @@ public:
 	template <class T>
 	boost::optional<T> optional_number_attribute (std::string c) const
 	{
-		boost::optional<std::string> s = optional_string_attribute (c);
+		auto s = optional_string_attribute (c);
 		if (!s) {
 			return boost::optional<T> ();
 		}
 
-		std::string t = s.get ();
+		auto t = s.get ();
 		boost::erase_all (t, " ");
 		return raw_convert<T> (t);
 	}

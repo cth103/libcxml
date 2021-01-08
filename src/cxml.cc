@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2012-2016 Carl Hetherington <cth@carlh.net>
+    Copyright (C) 2012-2021 Carl Hetherington <cth@carlh.net>
 
     This file is part of libcxml.
 
@@ -53,7 +53,7 @@ cxml::Node::name () const
 shared_ptr<cxml::Node>
 cxml::Node::node_child (string name) const
 {
-	list<shared_ptr<cxml::Node> > n = node_children (name);
+	auto const n = node_children (name);
 	if (n.size() > 1) {
 		throw cxml::Error ("duplicate XML tag " + name);
 	} else if (n.empty ()) {
@@ -66,7 +66,7 @@ cxml::Node::node_child (string name) const
 shared_ptr<cxml::Node>
 cxml::Node::optional_node_child (string name) const
 {
-	list<shared_ptr<cxml::Node> > n = node_children (name);
+	auto const n = node_children (name);
 	if (n.size() > 1) {
 		throw cxml::Error ("duplicate XML tag " + name);
 	} else if (n.empty ()) {
@@ -76,35 +76,32 @@ cxml::Node::optional_node_child (string name) const
 	return n.front ();
 }
 
-list<shared_ptr<cxml::Node> >
+list<shared_ptr<cxml::Node>>
 cxml::Node::node_children () const
 {
 	if (!_node) {
 		throw Error ("No node to read children from");
 	}
-	xmlpp::Node::NodeList c = _node->get_children ();
 
 	list<shared_ptr<cxml::Node> > n;
-	for (xmlpp::Node::NodeList::iterator i = c.begin (); i != c.end(); ++i) {
-		n.push_back (shared_ptr<Node> (new Node (*i)));
+	for (auto i: _node->get_children()) {
+		n.push_back (shared_ptr<Node> (new Node (i)));
 	}
 
 	return n;
 }
 
-list<shared_ptr<cxml::Node> >
+list<shared_ptr<cxml::Node>>
 cxml::Node::node_children (string name) const
 {
 	/* XXX: using find / get_path should work here, but I can't follow
 	   how get_path works.
 	*/
 
-	xmlpp::Node::NodeList c = _node->get_children ();
-
 	list<shared_ptr<cxml::Node> > n;
-	for (xmlpp::Node::NodeList::iterator i = c.begin (); i != c.end(); ++i) {
-		if ((*i)->get_name() == name) {
-			n.push_back (shared_ptr<Node> (new Node (*i)));
+	for (auto i: _node->get_children()) {
+		if (i->get_name() == name) {
+			n.push_back (shared_ptr<Node> (new Node (i)));
 		}
 	}
 
@@ -121,7 +118,7 @@ cxml::Node::string_child (string c) const
 optional<string>
 cxml::Node::optional_string_child (string c) const
 {
-	list<shared_ptr<Node> > nodes = node_children (c);
+	auto const nodes = node_children (c);
 	if (nodes.size() > 1) {
 		throw cxml::Error ("duplicate XML tag " + c);
 	}
@@ -136,14 +133,14 @@ cxml::Node::optional_string_child (string c) const
 bool
 cxml::Node::bool_child (string c) const
 {
-	string const s = string_child (c);
+	auto const s = string_child (c);
 	return (s == "1" || s == "yes" || s == "True");
 }
 
 optional<bool>
 cxml::Node::optional_bool_child (string c) const
 {
-	optional<string> s = optional_string_child (c);
+	auto const s = optional_string_child (c);
 	if (!s) {
 		return optional<bool> ();
 	}
@@ -160,12 +157,12 @@ cxml::Node::ignore_child (string name) const
 string
 cxml::Node::string_attribute (string name) const
 {
-	xmlpp::Element const * e = dynamic_cast<const xmlpp::Element *> (_node);
+	auto e = dynamic_cast<const xmlpp::Element *> (_node);
 	if (!e) {
 		throw cxml::Error ("missing attribute " + name);
 	}
 
-	xmlpp::Attribute* a = e->get_attribute (name);
+	auto a = e->get_attribute (name);
 	if (!a) {
 		throw cxml::Error ("missing attribute " + name);
 	}
@@ -176,12 +173,12 @@ cxml::Node::string_attribute (string name) const
 optional<string>
 cxml::Node::optional_string_attribute (string name) const
 {
-	xmlpp::Element const * e = dynamic_cast<const xmlpp::Element *> (_node);
+	auto e = dynamic_cast<const xmlpp::Element *> (_node);
 	if (!e) {
 		return optional<string> ();
 	}
 
-	xmlpp::Attribute* a = e->get_attribute (name);
+	auto a = e->get_attribute (name);
 	if (!a) {
 		return optional<string> ();
 	}
@@ -192,14 +189,14 @@ cxml::Node::optional_string_attribute (string name) const
 bool
 cxml::Node::bool_attribute (string name) const
 {
-	string const s = string_attribute (name);
+	auto const s = string_attribute (name);
 	return (s == "1" || s == "yes");
 }
 
 optional<bool>
 cxml::Node::optional_bool_attribute (string name) const
 {
-	optional<string> s = optional_string_attribute (name);
+	auto s = optional_string_attribute (name);
 	if (!s) {
 		return optional<bool> ();
 	}
@@ -210,10 +207,9 @@ cxml::Node::optional_bool_attribute (string name) const
 void
 cxml::Node::done () const
 {
-	xmlpp::Node::NodeList c = _node->get_children ();
-	for (xmlpp::Node::NodeList::iterator i = c.begin(); i != c.end(); ++i) {
-		if (dynamic_cast<xmlpp::Element *> (*i) && find (_taken.begin(), _taken.end(), (*i)->get_name()) == _taken.end ()) {
-			throw cxml::Error ("unexpected XML node " + (*i)->get_name());
+	for (auto i: _node->get_children()) {
+		if (dynamic_cast<xmlpp::Element *> (i) && find (_taken.begin(), _taken.end(), i->get_name()) == _taken.end ()) {
+			throw cxml::Error ("unexpected XML node " + i->get_name());
 		}
 	}
 }
@@ -223,9 +219,8 @@ cxml::Node::content () const
 {
 	string content;
 
-        xmlpp::Node::NodeList c = _node->get_children ();
-	for (xmlpp::Node::NodeList::const_iterator i = c.begin(); i != c.end(); ++i) {
-		xmlpp::ContentNode const * v = dynamic_cast<xmlpp::ContentNode const *> (*i);
+	for (auto i: _node->get_children()) {
+		auto v = dynamic_cast<xmlpp::ContentNode const *> (i);
 		if (v && dynamic_cast<xmlpp::TextNode const *>(v)) {
 			content += v->get_content ();
 		}
@@ -306,7 +301,7 @@ static
 string
 make_local (string v)
 {
-	struct lconv* lc = localeconv ();
+	auto lc = localeconv ();
 	boost::algorithm::replace_all (v, ".", lc->decimal_point);
 	/* We hope it's ok not to add in thousands separators here */
 	return v;
