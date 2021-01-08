@@ -70,7 +70,7 @@ cxml::Node::optional_node_child (string name) const
 	if (n.size() > 1) {
 		throw cxml::Error ("duplicate XML tag " + name);
 	} else if (n.empty ()) {
-		return shared_ptr<cxml::Node> ();
+		return {};
 	}
 
 	return n.front ();
@@ -124,7 +124,7 @@ cxml::Node::optional_string_child (string c) const
 	}
 
 	if (nodes.empty ()) {
-		return optional<string> ();
+		return {};
 	}
 
 	return nodes.front()->content();
@@ -142,7 +142,7 @@ cxml::Node::optional_bool_child (string c) const
 {
 	auto const s = optional_string_child (c);
 	if (!s) {
-		return optional<bool> ();
+		return {};
 	}
 
 	return (s.get() == "1" || s.get() == "yes" || s.get() == "True");
@@ -175,12 +175,12 @@ cxml::Node::optional_string_attribute (string name) const
 {
 	auto e = dynamic_cast<const xmlpp::Element *> (_node);
 	if (!e) {
-		return optional<string> ();
+		return {};
 	}
 
 	auto a = e->get_attribute (name);
 	if (!a) {
-		return optional<string> ();
+		return {};
 	}
 
 	return string (a->get_value ());
@@ -198,7 +198,7 @@ cxml::Node::optional_bool_attribute (string name) const
 {
 	auto s = optional_string_attribute (name);
 	if (!s) {
-		return optional<bool> ();
+		return {};
 	}
 
 	return (s.get() == "1" || s.get() == "yes");

@@ -164,7 +164,7 @@ public:
 	{
 		auto s = optional_string_child (c);
 		if (!s) {
-			return boost::optional<T> ();
+			return {};
 		}
 
 		auto t = s.get ();
