@@ -83,7 +83,7 @@ cxml::Node::node_children () const
 		throw Error ("No node to read children from");
 	}
 
-	vector<shared_ptr<cxml::Node> > n;
+	vector<shared_ptr<cxml::Node>> n;
 	for (auto i: _node->get_children()) {
 		n.push_back (shared_ptr<Node> (new Node (i)));
 	}
@@ -98,7 +98,7 @@ cxml::Node::node_children (string name) const
 	   how get_path works.
 	*/
 
-	vector<shared_ptr<cxml::Node> > n;
+	vector<shared_ptr<cxml::Node>> n;
 	for (auto i: _node->get_children()) {
 		if (i->get_name() == name) {
 			n.push_back (shared_ptr<Node> (new Node (i)));
