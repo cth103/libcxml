@@ -55,7 +55,7 @@ public:
 	/** @return error message.  Caller must not free the returned
 	 *  value.
 	 */
-	char const * what () const throw () {
+	char const * what () const noexcept override {
 		return _message.c_str ();
 	}
 
