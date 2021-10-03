@@ -2,7 +2,7 @@ libcxml
 =======
 
 This is a very small library which provides a slightly tidier
-C++ API than libxml++ for parsing HTML.
+C++ API than libxml++ for parsing XML.
 
 For example:
 
