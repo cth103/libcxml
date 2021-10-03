@@ -40,7 +40,6 @@ Building
     --enable-debug        build with debugging information and without optimisation
     --static              build statically
     --disable-tests       disable building of tests
-    --force-cpp11         force use of C++11
 
 ### Dependencies
 
