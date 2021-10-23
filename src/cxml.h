@@ -247,6 +247,9 @@ public:
 	Document (std::string root_name);
 	Document (std::string root_name, boost::filesystem::path);
 
+	Document (Document const&) = delete;
+	Document& operator= (Document const&) = delete;
+
 	virtual ~Document ();
 
 	void read_file (boost::filesystem::path);
