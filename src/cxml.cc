@@ -30,7 +30,7 @@ using std::vector;
 using boost::optional;
 
 cxml::Node::Node ()
-	: _node (0)
+	: _node (nullptr)
 {
 
 }
