@@ -24,7 +24,8 @@
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/erase.hpp>
-#include <stdint.h>
+#include <exception>
+#include <memory>
 #include <string>
 #include <vector>
 
