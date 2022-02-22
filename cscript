@@ -29,7 +29,7 @@ def build(target, options):
             # build as test/tests.cc defines BOOST_TEST_DYN_LINK
             cmd += ' --disable-tests'
     elif target.platform == 'windows':
-        cmd += ' --target-windows'
+        cmd += f' --target-windows-{target.bits}'
 
     target.command(cmd)
     target.command('./waf build install')
