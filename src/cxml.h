@@ -245,7 +245,7 @@ class Document : public Node
 {
 public:
 	Document ();
-	Document (std::string root_name);
+	explicit Document(std::string root_name);
 	Document (std::string root_name, boost::filesystem::path);
 
 	Document (Document const&) = delete;
