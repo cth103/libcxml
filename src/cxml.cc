@@ -24,10 +24,13 @@
 #include <boost/algorithm/string.hpp>
 #include <cstdio>
 
+
+using std::make_shared;
 using std::shared_ptr;
 using std::string;
 using std::vector;
 using boost::optional;
+
 
 cxml::Node::Node ()
 	: _node (nullptr)
@@ -85,7 +88,7 @@ cxml::Node::node_children () const
 
 	vector<shared_ptr<cxml::Node>> n;
 	for (auto i: _node->get_children()) {
-		n.push_back (shared_ptr<Node> (new Node (i)));
+		n.push_back(make_shared<Node>(i));
 	}
 
 	return n;
@@ -105,7 +108,7 @@ cxml::Node::node_children (string name) const
 	vector<shared_ptr<cxml::Node>> n;
 	for (auto i: _node->get_children()) {
 		if (i->get_name() == name) {
-			n.push_back (shared_ptr<Node> (new Node (i)));
+			n.push_back(make_shared<Node>(i));
 		}
 	}
 
