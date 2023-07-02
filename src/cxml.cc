@@ -98,6 +98,10 @@ cxml::Node::node_children (string name) const
 	   how get_path works.
 	*/
 
+	if (!_node) {
+		throw cxml::Error("Node has no internal xmlpp node; did you forget to call a read method on cxml::Document?");
+	}
+
 	vector<shared_ptr<cxml::Node>> n;
 	for (auto i: _node->get_children()) {
 		if (i->get_name() == name) {
