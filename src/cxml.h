@@ -231,6 +231,8 @@ public:
 		return _node;
 	}
 
+	bool is_text() const;
+
 protected:
 	xmlpp::Node* _node;
 

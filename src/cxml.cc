@@ -248,6 +248,13 @@ cxml::Node::namespace_prefix () const
 	return _node->get_namespace_prefix ();
 }
 
+
+bool
+cxml::Node::is_text() const
+{
+	return dynamic_cast<const xmlpp::TextNode*>(_node);
+}
+
 cxml::Document::Document (string root_name)
 	: _root_name (root_name)
 {
