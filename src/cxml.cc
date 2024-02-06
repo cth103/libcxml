@@ -470,3 +470,17 @@ cxml::raw_convert (string v)
 {
 	return locale_convert<double> (make_local(v));
 }
+
+
+xmlpp::Element*
+cxml::add_child(xmlpp::Element* parent, string const& name)
+{
+	return parent->add_child(name);
+}
+
+
+void
+cxml::add_text_child(xmlpp::Element* parent, string const& name, string const& text)
+{
+	parent->add_child(name)->add_child_text(text);
+}

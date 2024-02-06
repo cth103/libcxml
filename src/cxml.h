@@ -36,6 +36,7 @@
 
 namespace xmlpp {
 	class DomParser;
+	class Element;
 	class Node;
 }
 
@@ -268,6 +269,11 @@ private:
 	xmlpp::DomParser* _parser;
 	std::string _root_name;
 };
+
+
+xmlpp::Element* add_child(xmlpp::Element* parent, std::string const& name);
+void add_text_child(xmlpp::Element* parent, std::string const& name, std::string const& text);
+
 
 }
 
