@@ -35,8 +35,8 @@
 #endif
 
 namespace xmlpp {
-	class Node;
 	class DomParser;
+	class Node;
 }
 
 namespace cxml {
