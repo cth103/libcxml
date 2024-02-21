@@ -473,9 +473,9 @@ cxml::raw_convert (string v)
 
 
 xmlpp::Element*
-cxml::add_child(xmlpp::Element* parent, string const& name)
+cxml::add_child(xmlpp::Element* parent, string const& name, string const& ns_prefix)
 {
-	return parent->add_child(name);
+	return parent->add_child(name, ns_prefix);
 }
 
 

@@ -271,7 +271,7 @@ private:
 };
 
 
-xmlpp::Element* add_child(xmlpp::Element* parent, std::string const& name);
+xmlpp::Element* add_child(xmlpp::Element* parent, std::string const& name, std::string const& ns_prefix = {});
 void add_text_child(xmlpp::Element* parent, std::string const& name, std::string const& text);
 
 
