@@ -41,12 +41,23 @@ def options(opt):
     opt.add_option('--enable-debug', action='store_true', default=False, help='build with debugging information and without optimisation')
     opt.add_option('--static', action='store_true', default=False, help='build statically')
     opt.add_option('--disable-tests', action='store_true', default=False, help='disable building of tests')
+    opt.add_option('--c++17', action='store_true', default=False, help='build with C++17 and libxml++-4.0')
 
 def configure(conf):
     conf.load('compiler_cxx')
+
+    if vars(conf.options)['c++17']:
+        cpp_std = '17'
+        conf.env.XMLPP_API = '4.0'
+        conf.env.GLIBMM_API = '2.68'
+    else:
+        cpp_std = '11'
+        conf.env.XMLPP_API = '2.6'
+        conf.env.GLIBMM_API = '2.4'
+
     if conf.options.enable_debug:
         conf.env.append_value('CXXFLAGS', '-g')
-    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-Wno-deprecated-declarations', '-std=c++11', '-DBOOST_NO_CXX11_SCOPED_ENUMS'])
+    conf.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-Wno-deprecated-declarations', '-std=c++' + cpp_std, '-DBOOST_NO_CXX11_SCOPED_ENUMS'])
 
     conf.env.TARGET_WINDOWS = conf.options.target_windows_32 or conf.options.target_windows_64
     conf.env.STATIC = conf.options.static
@@ -60,7 +71,7 @@ def configure(conf):
         boost_lib_suffix = ''
         conf.env.append_value('CXXFLAGS', '-DLIBCXML_POSIX')
 
-    conf.check_cfg(package='libxml++-2.6', args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
+    conf.check_cfg(package='libxml++-' + conf.env.XMLPP_API, args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
 
     conf.check_cxx(fragment="""
  		   #include <boost/filesystem.hpp>\n
@@ -84,12 +95,13 @@ def configure(conf):
         conf.recurse('test')
 
 def build(bld):
-
     bld(source='libcxml.pc.in',
         version=VERSION,
         includedir='%s/include' % bld.env.PREFIX,
         libs="-L${libdir} -lcxml",
-        install_path='${LIBDIR}/pkgconfig')
+        install_path='${LIBDIR}/pkgconfig',
+        xmlpp_api=bld.env.XMLPP_API,
+        glibmm_api=bld.env.GLIBMM_API)
 
     bld.recurse('src')
     if not bld.env.DISABLE_TESTS:

@@ -105,14 +105,16 @@ cxml::Node::node_children (string name) const
 		throw cxml::Error("Node has no internal xmlpp node; did you forget to call a read method on cxml::Document?");
 	}
 
+	auto const glib_name = Glib::ustring(name);
+
 	vector<shared_ptr<cxml::Node>> n;
 	for (auto i: _node->get_children()) {
-		if (i->get_name() == name) {
+		if (i->get_name() == glib_name) {
 			n.push_back(make_shared<Node>(i));
 		}
 	}
 
-	_taken.push_back (name);
+	_taken.push_back(glib_name);
 	return n;
 }
 
@@ -215,7 +217,7 @@ void
 cxml::Node::done () const
 {
 	for (auto i: _node->get_children()) {
-		if (dynamic_cast<xmlpp::Element *> (i) && find (_taken.begin(), _taken.end(), i->get_name()) == _taken.end ()) {
+		if (dynamic_cast<xmlpp::Element*>(i) && find(_taken.begin(), _taken.end(), i->get_name()) == _taken.end()) {
 			throw cxml::Error ("unexpected XML node " + i->get_name());
 		}
 	}
@@ -304,7 +306,7 @@ cxml::Document::take_root_node ()
 	}
 
 	_node = _parser->get_document()->get_root_node ();
-	if (!_root_name.empty() && _node->get_name() != _root_name) {
+	if (!_root_name.empty() && _node->get_name() != Glib::ustring(_root_name)) {
 		throw cxml::Error ("unrecognised root node " + _node->get_name() + " (expecting " + _root_name + ")");
 	} else if (_root_name.empty ()) {
 		_root_name = _node->get_name ();
@@ -475,12 +477,16 @@ cxml::raw_convert (string v)
 xmlpp::Element*
 cxml::add_child(xmlpp::Element* parent, string const& name, string const& ns_prefix)
 {
+#if LIBXMLXX_MAJOR_VERSION == 2
 	return parent->add_child(name, ns_prefix);
+#else
+	return parent->add_child_element(name, ns_prefix);
+#endif
 }
 
 
 void
 cxml::add_text_child(xmlpp::Element* parent, string const& name, string const& text)
 {
-	parent->add_child(name)->add_child_text(text);
+	add_child(parent, name)->add_child_text(text);
 }

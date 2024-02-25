@@ -21,6 +21,7 @@
 #ifndef LIBCXML_CXML_H
 #define LIBCXML_CXML_H
 
+#include <glibmm/ustring.h>
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/erase.hpp>
@@ -238,7 +239,7 @@ protected:
 	xmlpp::Node* _node;
 
 private:
-	mutable std::vector<std::string> _taken;
+	mutable std::vector<Glib::ustring> _taken;
 };
 
 typedef std::shared_ptr<cxml::Node> NodePtr;
