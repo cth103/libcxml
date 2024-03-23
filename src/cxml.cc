@@ -20,6 +20,7 @@
 
 #include "cxml.h"
 #include <libxml++/libxml++.h>
+#include <libxml++config.h>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 #include <cstdio>
