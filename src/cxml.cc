@@ -478,7 +478,7 @@ cxml::raw_convert (string v)
 xmlpp::Element*
 cxml::add_child(xmlpp::Element* parent, string const& name, string const& ns_prefix)
 {
-#if LIBXMLXX_MAJOR_VERSION == 2
+#if !defined(LIBXMLXX_MAJOR_VERSION) || LIBXMLXX_MAJOR_VERSION == 2
 	return parent->add_child(name, ns_prefix);
 #else
 	return parent->add_child_element(name, ns_prefix);
