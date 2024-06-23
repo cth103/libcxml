@@ -61,19 +61,19 @@ BOOST_AUTO_TEST_CASE (test)
 	BOOST_CHECK_EQUAL (document.optional_bool_child("E").get(), true);
 	BOOST_CHECK_THROW (document.optional_bool_child("F"), cxml::Error);
 
-	BOOST_CHECK_EQUAL (document.node_children("F").size(), 2);
+	BOOST_CHECK_EQUAL (document.node_children("F").size(), 2U);
 	BOOST_CHECK_EQUAL (document.node_children("F").front()->content(), "1");
 	BOOST_CHECK_EQUAL (document.node_children("F").back()->content(), "2");
 
 	BOOST_CHECK (!document.optional_bool_child("G"));
 
 	vector<shared_ptr<cxml::Node>> h = document.node_children ("H");
-	BOOST_CHECK_EQUAL (h.size(), 1);
-	BOOST_CHECK_EQUAL (h.front()->node_children("I").size(), 2);
+	BOOST_CHECK_EQUAL (h.size(), 1U);
+	BOOST_CHECK_EQUAL (h.front()->node_children("I").size(), 2U);
 	BOOST_CHECK_EQUAL (h.front()->node_children("I").front()->content(), "testing");
 	BOOST_CHECK_EQUAL (h.front()->node_children("I").back()->content(), "more testing");
 
-	BOOST_CHECK_EQUAL (document.node_children("J").size(), 1);
-	BOOST_CHECK_EQUAL (document.node_children("J").front()->node_children("K").size(), 1);
+	BOOST_CHECK_EQUAL (document.node_children("J").size(), 1U);
+	BOOST_CHECK_EQUAL (document.node_children("J").front()->node_children("K").size(), 1U);
 	BOOST_CHECK_EQUAL (document.node_children("J").front()->node_children("K").front()->content(), "jim");
 }
