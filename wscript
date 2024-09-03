@@ -40,6 +40,7 @@ def options(opt):
     opt.add_option('--target-windows-32', action='store_true', default=False, help='set up to do a cross-compile to Windows 32-bit')
     opt.add_option('--enable-debug', action='store_true', default=False, help='build with debugging information and without optimisation')
     opt.add_option('--static', action='store_true', default=False, help='build statically')
+    opt.add_option('--static-boost', action='store_true', default=False, help='link statically against boost')
     opt.add_option('--disable-tests', action='store_true', default=False, help='disable building of tests')
     opt.add_option('--c++17', action='store_true', default=False, help='build with C++17 and libxml++-4.0')
 
@@ -71,6 +72,9 @@ def configure(conf):
         boost_lib_suffix = ''
         conf.env.append_value('CXXFLAGS', '-DLIBCXML_POSIX')
 
+    if not conf.options.static_boost:
+        conf.env.append_value('CXXFLAGS', '-DBOOST_TEST_DYN_LINK')
+
     conf.check_cfg(package='libxml++-' + conf.env.XMLPP_API, args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
 
     conf.check_cxx(fragment="""
@@ -86,7 +90,7 @@ def configure(conf):
         conf.check_cxx(fragment="""
                                   #define BOOST_TEST_MODULE Config test\n
                                   #include <boost/test/unit_test.hpp>\n
-                                  int main() {}
+                                  BOOST_AUTO_TEST_CASE(foo) {}
                                   """,
                                   msg='Checking for boost unit testing library',
                                   lib=['boost_unit_test_framework%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
