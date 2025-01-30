@@ -218,7 +218,7 @@ void
 cxml::Node::done () const
 {
 	for (auto i: _node->get_children()) {
-		if (dynamic_cast<xmlpp::Element*>(i) && find(_taken.begin(), _taken.end(), i->get_name()) == _taken.end()) {
+		if (dynamic_cast<xmlpp::Element const*>(i) && find(_taken.begin(), _taken.end(), i->get_name()) == _taken.end()) {
 			throw cxml::Error ("unexpected XML node " + i->get_name());
 		}
 	}
