@@ -39,7 +39,7 @@ cxml::Node::Node ()
 
 }
 
-cxml::Node::Node (xmlpp::Node* node)
+cxml::Node::Node(xmlpp::Node const* node)
 	: _node (node)
 {
 

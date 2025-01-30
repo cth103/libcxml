@@ -122,7 +122,7 @@ public:
 	 *  not destroy the xmlpp::Node.
 	 *  @param node xmlpp::Node.
 	 */
-	Node (xmlpp::Node* node);
+	Node(xmlpp::Node const* node);
 
 	std::string name () const;
 
@@ -229,14 +229,14 @@ public:
 	std::vector<std::shared_ptr<Node>> node_children () const;
 	std::vector<std::shared_ptr<Node>> node_children (std::string) const;
 
-	xmlpp::Node* node () const {
+	xmlpp::Node const* node() const {
 		return _node;
 	}
 
 	bool is_text() const;
 
 protected:
-	xmlpp::Node* _node;
+	xmlpp::Node const* _node;
 
 private:
 	mutable std::vector<Glib::ustring> _taken;
