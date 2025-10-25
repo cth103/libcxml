@@ -77,13 +77,19 @@ def configure(conf):
 
     conf.check_cfg(package='libxml++-' + conf.env.XMLPP_API, args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
 
+    boost_system = conf.check_cxx(lib='boost_system%s' % boost_lib_suffix, mandatory=False)
+    def boost_libs(name):
+        libs = ['boost_system%s' % boost_lib_suffix] if boost_system else []
+        libs.append('boost_%s%s' % (name, boost_lib_suffix))
+        return libs
+
     conf.check_cxx(fragment="""
  		   #include <boost/filesystem.hpp>\n
     		   int main() { boost::filesystem::copy_file ("a", "b"); }\n
 		   """,
                    msg='Checking for boost filesystem library',
                    libpath='/usr/local/lib',
-                   lib=['boost_filesystem%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
+                   lib=boost_libs('filesystem'),
                    uselib_store='BOOST_FILESYSTEM')
 
     if not conf.options.disable_tests:
@@ -93,7 +99,7 @@ def configure(conf):
                                   BOOST_AUTO_TEST_CASE(foo) {}
                                   """,
                                   msg='Checking for boost unit testing library',
-                                  lib=['boost_unit_test_framework%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
+                                  lib=boost_libs('unit_test_framework'),
                                   uselib_store='BOOST_TEST')
 
         conf.recurse('test')
