@@ -20,20 +20,27 @@
 
 import os
 
-def build(target, options):
-    cmd = './waf configure --prefix=%s' % target.directory
-    if target.platform == 'linux':
-        cmd += ' --static'
-        if (target.distro, target.version) in [('centos', '7'), ('ubuntu', '16.04'), ('ubuntu', '14.04')]:
-            cmd += ' --static-boost'
-    elif target.platform == 'windows':
-        cmd += f' --target-windows-{target.bits}'
+def build(target, options, for_package, version):
+    if for_package and target.platform == 'linux' and target.distro == 'arch':
+        target.command('git clone https://aur.archlinux.org/libcxml.git')
+        os.chdir('libcxml')
+        target.command('sed -i "s/tag=v\${pkgver}/branch=main/" PKGBUILD')
+        target.command('makepkg --skipinteg')
+        target.command('sudo pacman --noconfirm -U libcxml*.zst')
+    else:
+        cmd = './waf configure --prefix=%s' % target.directory
+        if target.platform == 'linux':
+            cmd += ' --static'
+            if (target.distro, target.version) in [('centos', '7'), ('ubuntu', '16.04'), ('ubuntu', '14.04')]:
+                cmd += ' --static-boost'
+        elif target.platform == 'windows':
+            cmd += f' --target-windows-{target.bits}'
 
-    if 'c++17' in options and options['c++17']:
-        cmd += ' --c++17'
+        if 'c++17' in options and options['c++17']:
+            cmd += ' --c++17'
 
-    target.command(cmd)
-    target.command('./waf build install')
+        target.command(cmd)
+        target.command('./waf build install')
 
 def test(target, test):
     if target.platform != 'windows':
