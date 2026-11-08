@@ -42,19 +42,17 @@ def options(opt):
     opt.add_option('--static', action='store_true', default=False, help='build statically')
     opt.add_option('--static-boost', action='store_true', default=False, help='link statically against boost')
     opt.add_option('--disable-tests', action='store_true', default=False, help='disable building of tests')
-    opt.add_option('--c++17', action='store_true', default=False, help='build with C++17 and libxml++-4.0')
+    opt.add_option('--c++17', action='store_true', default=False, help='build with C++17 and libxml++-{4,5}.0')
 
 def configure(conf):
     conf.load('compiler_cxx')
 
     if vars(conf.options)['c++17']:
         cpp_std = '17'
-        conf.env.XMLPP_API = '4.0'
-        conf.env.GLIBMM_API = '2.68'
+        try_xmlpp_api = ['5.0', '4.0']
     else:
         cpp_std = '11'
-        conf.env.XMLPP_API = '2.6'
-        conf.env.GLIBMM_API = '2.4'
+        try_xmlpp_api = ['2.6']
 
     if conf.options.enable_debug:
         conf.env.append_value('CXXFLAGS', '-g')
@@ -75,7 +73,16 @@ def configure(conf):
     if not conf.options.static_boost:
         conf.env.append_value('CXXFLAGS', '-DBOOST_TEST_DYN_LINK')
 
-    conf.check_cfg(package='libxml++-' + conf.env.XMLPP_API, args='--cflags --libs', uselib_store='LIBXML++', mandatory=True)
+    for api in try_xmlpp_api:
+        if conf.check_cfg(package='libxml++-' + api, args='--cflags --libs', uselib_store='LIBXML++', mandatory=api == try_xmlpp_api[-1]):
+            conf.env.XMLPP_API = api
+            break
+
+    if conf.env.XMLPP_API == '5.0':
+        conf.env.append_value('CXXFLAGS', ['-DLIBCXML_XMLPP_5'])
+
+    glibmm = { '2.6': '2.4', '4.0': '2.68', '5.0': None }
+    conf.env.GLIBMM_API = glibmm[conf.env.XMLPP_API]
 
     boost_system = conf.check_cxx(lib='boost_system%s' % boost_lib_suffix, mandatory=False)
     def boost_libs(name):
@@ -111,7 +118,8 @@ def build(bld):
         libs="-L${libdir} -lcxml",
         install_path='${LIBDIR}/pkgconfig',
         xmlpp_api=bld.env.XMLPP_API,
-        glibmm_api=bld.env.GLIBMM_API)
+        glibmm="glibmm-%s" % (bld.env.GLIBMM_API) if bld.env.GLIBMM_API else "",
+    )
 
     bld.recurse('src')
     if not bld.env.DISABLE_TESTS:

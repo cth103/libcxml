@@ -31,6 +31,11 @@ using std::shared_ptr;
 using std::string;
 using std::vector;
 using boost::optional;
+#ifdef LIBCXML_XMLPP_5
+using xmlpp::ustring;
+#else
+using Glib::ustring;
+#endif
 
 
 cxml::Node::Node ()
@@ -106,7 +111,7 @@ cxml::Node::node_children (string name) const
 		throw cxml::Error("Node has no internal xmlpp node; did you forget to call a read method on cxml::Document?");
 	}
 
-	auto const glib_name = Glib::ustring(name);
+	auto const glib_name = ustring(name);
 
 	vector<shared_ptr<cxml::Node>> n;
 	for (auto i: _node->get_children()) {
@@ -115,7 +120,7 @@ cxml::Node::node_children (string name) const
 		}
 	}
 
-	_taken.push_back(glib_name);
+	_taken.push_back(name);
 	return n;
 }
 
@@ -161,7 +166,7 @@ cxml::Node::optional_bool_child (string c) const
 void
 cxml::Node::ignore_child (string name) const
 {
-	_taken.push_back (name);
+	_taken.push_back(name);
 }
 
 string
@@ -218,7 +223,11 @@ void
 cxml::Node::done () const
 {
 	for (auto i: _node->get_children()) {
+#ifdef LIBCXML_XMLPP_5
 		if (dynamic_cast<xmlpp::Element const*>(i) && find(_taken.begin(), _taken.end(), i->get_name()) == _taken.end()) {
+#else
+		if (dynamic_cast<xmlpp::Element const*>(i) && find(_taken.begin(), _taken.end(), i->get_name().raw()) == _taken.end()) {
+#endif
 			throw cxml::Error ("unexpected XML node " + i->get_name());
 		}
 	}
@@ -307,7 +316,7 @@ cxml::Document::take_root_node ()
 	}
 
 	_node = _parser->get_document()->get_root_node ();
-	if (!_root_name.empty() && _node->get_name() != Glib::ustring(_root_name)) {
+	if (!_root_name.empty() && _node->get_name() != ustring(_root_name)) {
 		throw cxml::Error ("unrecognised root node " + _node->get_name() + " (expecting " + _root_name + ")");
 	} else if (_root_name.empty ()) {
 		_root_name = _node->get_name ();
